@@ -1,0 +1,335 @@
+% Created 2020-02-04 Tue 17:13
+% Intended LaTeX compiler: pdflatex
+\documentclass[12pt, a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{graphicx}
+\usepackage{grffile}
+\usepackage{longtable}
+\usepackage{wrapfig}
+\usepackage{rotating}
+\usepackage[normalem]{ulem}
+\usepackage{amsmath}
+\usepackage{textcomp}
+\usepackage{amssymb}
+\usepackage{capt-of}
+\usepackage{hyperref}
+\usepackage[style=authoryear,natbib]{biblatex}
+\setlength\bibitemsep{\baselineskip}
+\addbibresource{/Users/guilhermesalome/Emacs/references.bib}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{amsmath}
+\usepackage{mathtools}
+\usepackage{multirow}
+\usepackage{booktabs}
+\usepackage{bbm}
+\usepackage{dsfont}
+\usepackage[]{algorithm2e}
+\usepackage[flushleft]{threeparttable}
+\newcommand\numberthis{\addtocounter{equation}{1}\tag{\theequation}}
+\newcommand{\E}[1]{\mathbb{E}{\left[#1\right]}}
+\newcommand{\EQ}[1]{\mathbb{E}_t^{\mathbb{Q}}{\left[#1\right]}}
+\newcommand{\EP}[1]{\mathbb{E}_t^{\mathbb{P}}{\left[#1\right]}}
+\newcommand{\e}[1]{\text{e}^{#1}}
+\newcommand{\abs}[1]{\left\vert{#1}\right\vert}
+\newcommand{\dis}{\overset{d}{\sim}}
+\newcommand{\Var}[1]{\mathrm{Var}\left(#1\right)}
+\newcommand{\Corr}[1]{\mathrm{Corr}\left(#1\right)}
+\newcommand{\Normal}[1]{\mathcal{N}\left(0, #1\right)}
+\newcommand{\StdNormal}{\Normal{1}}
+\newcommand{\stdnormal}{\mathcal{N}\left(0, 1\right)}
+\newcommand{\Max}[1]{\text{max}\left\{#1\right\}}
+\newcommand{\Set}[1]{\left\{#1\right\}}
+\newcommand{\Norm}[1]{\left\Vert #1 \right\Vert}
+\newcommand{\Prob}[1]{\mathbb{P}\left(#1\right)}
+\newcommand{\ProbHat}[1]{\hat{\mathbb{P}}\left(#1\right)}
+\renewcommand{\ln}[1]{\text{ln}\left(#1\right)}
+\DeclareMathOperator*{\argmin}{\arg\!\min}
+\DeclareMathOperator*{\argmax}{\arg\!\max}
+\DeclarePairedDelimiter\ceil{\lceil}{\rceil}
+\DeclarePairedDelimiter\floor{\lfloor}{\rfloor}
+\newcommand{\Poisson}[1]{\text{Poisson}\left(#1\right)}
+\newcommand{\Uniform}[1]{\text{Unif}#1}
+\newcommand{\Cov}[1]{\mathrm{Cov}\left(#1\right)}
+\usepackage[hang,small,bf]{caption}
+\usepackage[margin=1in]{geometry}
+\usepackage{mathtools}
+\usepackage{xcolor}
+\usepackage{resizegather}
+\usepackage{multirow}
+\definecolor{darkgreen}{rgb}{0.1, 0.6, 0.1}
+\usepackage{float}
+\usepackage{setspace}
+\usepackage{listings}
+\usepackage{import}
+\input{/Users/guilhermesalome/Emacs/Settings/Latex/latex-code.tex}
+\newtheorem{problem}{Problem}
+\newtheorem{theorem}{Theorem}
+\usepackage[flushleft]{threeparttable}
+\date{}
+\title{Making Emacs Look Nice}
+\hypersetup{
+ pdfauthor={Guilherme Salomé},
+ pdftitle={Making Emacs Look Nice},
+ pdfkeywords={},
+ pdfsubject={},
+ pdfcreator={Emacs 26.1 (Org mode 9.2.1)},
+ pdflang={English}}
+\begin{document}
+
+\maketitle
+Emacs is an amazing text editor. And also one that is quite difficult to master.
+One of the very first things I noticed when I started using Emacs, was that it looked quite ugly, specially when compared to other editors (like Visual Studio, Atom, Sublime). The good news is that Emacs is extremly customizable, and with just a few lines of code and some packages, we can turn Emacs into the prettiest editor we will ever use.
+
+\section{Getting the Right Emacs Version}
+\label{sec:orga1750f4}
+
+Let's begin by getting the proper version of Emacs for Mac. If you google "Emacs for Mac", you will probably run into the \href{https://emacsformacosx.com}{Emacs for Mac OSX} page. This page offers a pure version of Emacs for Mac, but that is not the version we are looking for. Why? Because if you are using a Mac, your screen probably has a very high resolution, and that Emacs version does not support that. Another problem is that when we try to preview Latex equations inside org-mode, they will look pixelated, and we want to avoid that. So, we want to download another Emacs binary that has better support for the Mac high resolution display.
+
+If you google "Emacs Yamamoto" you will run into the \href{https://github.com/railwaycat/homebrew-emacsmacport}{Railwaycat Homebrew Emacs Mac Port}, which is a github repository that contains the right Emacs version for us. Follow this link to the \href{https://github.com/railwaycat/homebrew-emacsmacport/releases}{download page} and get the newest version. Right now I am using Emacs 25.2 Mac 6.4, but any Emacs 25 or newer should be fine for this tutorial.
+
+Now that you downloaded Yamamoto's Emacs version and moved it to your \texttt{Applications} folder, we can start messing around with the \texttt{init.el} file. This file is located in the folder \texttt{\textasciitilde{}/.emacs.d/}, and if it does not exist, you can create it. The \texttt{.el} means that the file is going to hold a bunch of Elisp commands, which modify and extend Emacs, customizing it to your needs.
+
+\section{Getting Access to the Major Packages Repositores}
+\label{sec:orgd42b07c}
+
+In order to make Emacs look pretty, we will need to install some packages. These packages are located in repositories that Emacs can easily access. To enable this easy access, we add the following to the \texttt{init.el} file:
+
+\lstset{language=Lisp,label= ,caption= ,captionpos=b,numbers=none}
+\begin{lstlisting}
+;; Add Main Repositories for Emacs packages
+(package-initialize)
+(setq package-archives '(("gnu" . "http://elpa.gnu.org/packages/")
+                         ("marmalade" . "http://marmalade-repo.org/packages/")
+                         ("melpa" . "http://melpa.org/packages/")))
+\end{lstlisting}
+
+In order to see what packages are available in those repositories, run the command \texttt{M-x list-packages}. If you see a package you want to install, move the cursor to the package's line and press \texttt{x}. Emacs will then prompt you for permission to install, and then you are done.
+
+If you know the name of the package you want to install, you can skip listing all packages and go directly for the one you want. To do so, run the command \texttt{M-x package-install RET}, and then you will be prompted for the name of the package you want to install.
+
+Installing packages is an important part of using Emacs, allowing us to use good code written by other people, making our lives much easier! Making Emacs look pretty will involve installing a handful of packages, so be ready for the \texttt{M-x package-install}!
+
+\section{Making Emacs Look Good}
+\label{sec:org33ea5e8}
+
+Now that we have access to the big repositories, we can start modifying Emacs. Modifying Emacs requires adding elisp code to the \texttt{init.el} file, and installing new packages when required. We can check whether a package has to be installed by running the code related to it. For example, after adding a line of code to your \texttt{init.el} file, move the cursor to the end of the line, and type \texttt{C-x C-e}, which will evaluate the elisp statement. If the statement produces the desired effect, then the package or feature you are modifying is already installed, and nothing else needs to be done. However, if you get an error saying the variable or function does not exist, or if nothing happens to Emacs, then the package you are trying to modify is probably not installed. Then, you should install it using \texttt{M-x package-install} or through \texttt{M-x list-packages}.
+
+\subsection{Removing the Toolbar, Scrollbar and the Menu Bar}
+\label{sec:orgecdd7ca}
+
+To make Emacs look less cluttered, we begin by removing the toolbar, the scroll bar and the menu bar. Add the following to your \texttt{init.el}:
+
+\lstset{language=Lisp,label= ,caption= ,captionpos=b,numbers=none}
+\begin{lstlisting}
+;; Removes toolbar, scroll bar and menu bar
+(tool-bar-mode -1)
+(scroll-bar-mode -1)
+(menu-bar-mode -1)
+\end{lstlisting}
+
+This removes all those bars that clutter our space, making Emacs look much cleaner.
+
+\subsection{Borderless Fullscreen (Removing Title Bar)}
+\label{sec:org90f9c0e}
+
+Next, we make Emacs occupy the entire screen, but without moving it to a new Desktop area. We want to achieve a fullscreen borderless effect, so that Alt-Tabbing from one application to the other is fast. To do so, we add:
+
+\lstset{language=Lisp,label= ,caption= ,captionpos=b,numbers=none}
+\begin{lstlisting}
+;; Maximizes emacs on startup and removes title bar (borderless fullscreen)
+(set-frame-parameter nil 'fullscreen 'fullboth) ;; this works for the emacs version from Yamamoto
+\end{lstlisting}
+
+If you are not using the Emacs binary we discussed above this command will not work. If for some reason you are not willing to use that Emacs, and are using Emacs from \href{https://emacsformacosx.com}{Emacs for Mac OSX}, for example, you can use this command instead:
+
+\lstset{language=Lisp,label= ,caption= ,captionpos=b,numbers=none}
+\begin{lstlisting}
+;; the code below works for the emacs version from emacsformacosx.com
+(add-hook 'window-setup-hook (lambda()
+                       (setq ns-auto-hide-menu-bar t)
+                       (set-frame-position nil 0 -24)
+                       (set-frame-size nil (display-pixel-width) (display-pixel-height) t)))
+\end{lstlisting}
+
+Now, when you open Emacs, it should occupy the entire screen, and no menus or scrollbars should be visible.
+
+\subsection{Highlighting the Current Line}
+\label{sec:orgbf1a27d}
+
+Next, we want Emacs to highlight the line where the cursor is.
+
+\lstset{language=Lisp,label= ,caption= ,captionpos=b,numbers=none}
+\begin{lstlisting}
+;; Highlight Current Line
+(add-hook 'after-init-hook 'global-hl-line-mode)
+\end{lstlisting}
+
+This makes jumping from line to line and quickly finding where the cursor is much faster.
+
+\subsection{Highlighting Matching Parentheses}
+\label{sec:orgcf8b3bf}
+
+We also want Emacs to highlight matching parentheses when the cursor is on one:
+
+\lstset{language=Lisp,label= ,caption= ,captionpos=b,numbers=none}
+\begin{lstlisting}
+;; Highlight corresponding parentheses when cursor is on one
+(setq show-paren-delay 0) ;; shows matching parenthesis asap
+(show-paren-mode t)
+\end{lstlisting}
+
+Now it is easy to see when a parenthesis is missing in the text.
+
+\subsection{Better Line Wrapping}
+\label{sec:org935525c}
+
+By default, Emacs wraps lines that are too long by using a small arrow that is displayed near the scroll bar. I find this behavior slightly ugly and not very helpful. We can use a better wrapper that just moves the overflowing content to the next line:
+
+\lstset{language=Lisp,label= ,caption= ,captionpos=b,numbers=none}
+\begin{lstlisting}
+;; Proper line wrapping
+(global-visual-line-mode t)
+\end{lstlisting}
+
+\subsection{Making Unnecessary White Spaces Visible}
+\label{sec:org7e9e1cd}
+
+When we write large files, or using programming languages that care about white spaces and indentations, it is useful to be able to see white spaces that are useless and out of place. The next line does that:
+
+\lstset{language=Lisp,label= ,caption= ,captionpos=b,numbers=none}
+\begin{lstlisting}
+;; Show trailing white spaces
+(setq-default show-trailing-whitespace t)
+\end{lstlisting}
+
+Now, whenever an unnecessary whitespace occurs, it will be marked in red.
+
+Since deleting useless whitespaces by hand each time is time-consuming and annoying, we can automatically delete all of them before we save the file. This can be accomplished via:
+
+\lstset{language=Lisp,label= ,caption= ,captionpos=b,numbers=none}
+\begin{lstlisting}
+;; Remove useless whitespace before saving a file
+(add-hook 'before-save-hook 'whitespace-cleanup)
+(add-hook 'before-save-hook (lambda() (delete-trailing-whitespace)))
+\end{lstlisting}
+
+Now, if you save a file that contains whitespaces, they are all going to be automatically deleted. This reduces file sizes and makes them neat.
+
+\subsection{Nice Icons for Emacs}
+\label{sec:org6b6e0ee}
+
+Some visual modifications of Emacs require displaying icons, like an icon for a folder or a file. The default icons do not look nice and sometimes are not even available to Emacs. Fortunatelly, there is a package called \texttt{all-the-icons} that takes care of making nice icons available for Emacs and other Emacs' packages.
+
+To install this package run \texttt{M-x package-install RET all-the-icons}, and then confirm the installation. Next, we need to install the fonts that came with this package on our Mac. To do so, run \texttt{M-x all-the-icons-install-fonts RET}. Installing all the icons fonts takes a while, but it is worth it! Now, we can make it available to other packages via the following:
+
+\lstset{language=Lisp,label= ,caption= ,captionpos=b,numbers=none}
+\begin{lstlisting}
+;; Adds Nice Icons to Emacs so that other themes can use them (required for Doom theme below)
+;; run M-x all-the-icons-install-fonts RET to install the fonts
+(require 'all-the-icons)
+\end{lstlisting}
+
+\subsection{Folder Explorer (File Tree)}
+\label{sec:orgb75cc29}
+
+Now we add a file explorer for Emacs called Neotree. It can be installed by running \texttt{M-x package-install RET neotree RET} and confirming the installation. To actually enable it inside Emacs, add the following:
+
+\lstset{language=Lisp,label= ,caption= ,captionpos=b,numbers=none}
+\begin{lstlisting}
+;; Folder explorer (file tree) Neotree
+(require 'neotree)
+(Global-set-key [f8] 'neotree-toggle) ;; the F8 key toggles the file tree
+\end{lstlisting}
+
+Now, pressing F8 on the keyboard will open Neotree inside Emacs. Neotree can be used to navigate through folders and open files. It is specially useful when working on big projects since it gives a visual representation of the folders/files. You can find more about \href{https://www.emacswiki.org/emacs/NeoTree\#toc4}{Neotree Shortcuts here}.
+
+\subsection{Emacs Doom Theme}
+\label{sec:org726e9df}
+
+All the changes we have done so far are small quality of life improvements that affect Emacs here and there. Now, we will install a theme that will affect Emacs visually in big ways. This theme will also change how Neotree looks like, and will make use of all-the-icons package.
+
+We will install a very nice theme package called \href{https://github.com/hlissner/emacs-doom-themes}{Doom}. To install it, run \texttt{M-x package-install RET doom-themes}. And to start using it, add the following to your \texttt{init.el}:
+
+\lstset{language=Lisp,label= ,caption= ,captionpos=b,numbers=none}
+\begin{lstlisting}
+;; Use doom theme for Emacs buffers
+(require 'doom-themes)
+(load-theme 'doom-one t) ;; loads doom-one theme, there are other options:
+                         ;; doom-vibrant, doom-molokai, doom-nova, and others
+;; Use doom theme for Neotree file explorer
+(doom-themes-neotree-config) ;; loads doom theme for the file tree Neotree
+(setq doom-themes-enable-bold t    ; if nil, bold is universally disabled
+      doom-themes-enable-italic t) ; if nil, italics is universally disabled
+;; Enable all-the-icons beautiful icons for the Neotree doom theme
+(setq doom-neotree-enable-file-icons t)
+(setq doom-neotree-enable-folder-icons t)
+(setq doom-neotree-enable-chevron-icons t)
+;; Enables different colors for different file types for the Neotree doom theme
+(setq doom-neotree-enable-type-colors t)
+\end{lstlisting}
+
+In order to execute all this code, move the cursor to anywhere in the \texttt{init.el} file and run \texttt{M-x eval-buffer}. Now, Emacs and the Neotree explorer are going to look completely different! The theme we are using is called \texttt{doom-one}, and looks very neat and professional. There are other themes available that you can quickly change to. To do so, just change \texttt{doom-one} to the name of some other doom-theme, like \texttt{doom-molokai}. More information is available \href{https://github.com/hlissner/emacs-doom-themes}{on the doom-themes repository}.
+
+If you open Neotree, you will also notice that all the icons have changed. More details on how to further customize Neotree are available \href{https://github.com/hlissner/emacs-doom-themes/wiki}{here}.
+
+\subsection{A Better Mode-Line}
+\label{sec:orga7da27d}
+
+Emacs has a mode-line on the bottom of any buffer that displays the name of the file you are working on, what major and minor modes are being used, and so on. Let's make it look better! To do so, we install the package \texttt{smart-mode-line} by running \texttt{M-x package-install RET smart-mode-line RET}, and then confirming the installation. Once installed, we add:
+
+\lstset{language=Lisp,label= ,caption= ,captionpos=b,numbers=none}
+\begin{lstlisting}
+;; Smart-mode-line makes the mode-line better to read
+;; first remove annoying message at startup that
+;; asks if you want to run the theme lisp code
+(setq sml/no-confirm-load-theme t)
+;; load smart-mode-line
+;; (setq sml/theme 'dark) ;; changes the theme to dark
+(sml/setup) ;; automatically figures out a theme if none is specified
+\end{lstlisting}
+
+Now your mode-line will also be themed. Notice that smart-mode-line automatically detects your color scheme and chooses a nice theme for the mode-line. If you want to change the theme to something else, just uncomment the line before \texttt{(sml/setup)}. More details and other themes are available \href{https://github.com/Malabarba/smart-mode-line\#installation}{on the smart-mode-line repository}.
+
+\subsection{Nice Looking \LaTeX{} Equations in Org-Mode}
+\label{sec:orgf3a0a87}
+
+Some of you might be using \href{http://orgmode.org}{org-mode} to take notes and write articles. If you have \href{http://www.tug.org/mactex/}{\LaTeX{}} configured to work with Emacs, you can use \texttt{C-c C-x C-l} to preview equations inside org-mode. However, by default Emacs will render Latex equations and display them using PNG images. PNG is a good image format, but the problem is that these renders have a very low resolution when compared to a Mac's display resolution, so they will look very bad. The solution is to use SVG images instead, which are scalable to any resolution!
+
+Using SVG images requires Emacs to have been installed with SVG support. Unfortunately, SVG support cannot be added to Emacs like we did with packages, it has to be "pre-installed". The good news is that if you followed this tutorial and downloaded the Emacs binary mentioned at the beginning of the post, then you are good to go!
+
+There is one extra requirement: having the program \texttt{dvisvgm} installed in your machine. If you are running the latest Latex distribution from \href{http://www.tug.org/mactex/}{MacTex}, then you most likely already have it, and are also good to go. If you installed Latex from some other source, I highly recommend  you to download the latest release from \href{http://www.tug.org/mactex/}{MacTex}. At the time of writing, the latest release was the MacTex 2017 distribution.
+
+To switch to SVG images just add the following to your \texttt{init.el} file:
+
+\lstset{language=Lisp,label= ,caption= ,captionpos=b,numbers=none}
+\begin{lstlisting}
+;; Makes Orgmode Preview of Latex equations use SVG images instead of PNG
+;; so that equations look good on higher dpi screens
+(setq org-latex-create-formula-image-program 'dvisvgm)
+;; to increase the size of the equations (1.0 is the default)
+(setq org-format-latex-options (plist-put org-format-latex-options :scale 1.0))
+\end{lstlisting}
+
+Now, if you run \texttt{C-c C-x C-l} you should get very sharp images that look great on Emacs.
+
+\section{Conclusion}
+\label{sec:orgf6e39bd}
+
+In this tutorial we made the following changes to Emacs:
+\begin{enumerate}
+\item Removed unnecessary toolbars;
+\item Made Emacs borderless fullscreen;
+\item Added highlighting to the current line and matching parentheses;
+\item Improved Emacs' line wrapping;
+\item Made removing unnecessary white spaces quick and easy;
+\item Added beautiful icons to Emacs;
+\item Added a Folder Explorer to Emacs to better manage bigger projects;
+\item Started using a theme that makes Emacs buffers look good, that makes Neotree look good, and also makes use of the beautiful icons we installed;
+\item Changed the mode-line so that it also has a theme;
+\item And changed the way Emacs render Latex equations so that they look sharp.
+\end{enumerate}
+
+All these changes improved Emacs by a lot, taking it from a bland white screen, to a colorful and captivating editor that we actually want to use. I hope this post was useful to you, and if it was feel free to share it. If you have any suggestions or comments \href{http://guilhermesalome.com/index.html\#toContact}{send me an email}. Have a wonderful time!
+\end{document}

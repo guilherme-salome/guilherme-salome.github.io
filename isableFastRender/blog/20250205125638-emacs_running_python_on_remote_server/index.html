@@ -1,0 +1,983 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr" class="scroll-smooth" data-default-appearance="light"
+  data-auto-appearance="true"><head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+  <meta charset="utf-8" />
+  
+  <meta http-equiv="content-language" content="en" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+  
+  <title>Emacs Running Python on Remote Server &middot; Guilherme Salome</title>
+  <meta name="title" content="Emacs Running Python on Remote Server &middot; Guilherme Salome" />
+  
+  <meta name="description" content="Personal website of Guilherme Salome" />
+  <meta name="keywords" content="org-mode, babel, python, " />
+  
+  
+  <link rel="canonical" href="http://localhost:1313/blog/20250205125638-emacs_running_python_on_remote_server/" />
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  <link type="text/css" rel="stylesheet" href="/css/main.bundle.min.a62833be879294c8975425023403c101d34f7eceea760eb5fff9f2cedda1defe506e290acdcaa5264e07bc35dbcbc28b4c4092181b20d0a583adea3ddc50ca80.css"
+    integrity="sha512-pigzvoeSlMiXVCUCNAPBAdNPfs7qdg61//nyzt2h3v5QbikKzcqlJk4HvDXby8KLTECSGBsg0KWDreo93FDKgA==" />
+  
+  
+  <script type="text/javascript" src="/js/appearance.min.516a16745bea5a9bd011138d254cc0fd3973cd55ce6e15f3dec763e7c7c2c7448f8fe7b54cca811cb821b0c7e12cd161caace1dd794ac3d34d40937cbcc9ee12.js"
+    integrity="sha512-UWoWdFvqWpvQERONJUzA/TlzzVXObhXz3sdj58fCx0SPj&#43;e1TMqBHLghsMfhLNFhyqzh3XlKw9NNQJN8vMnuEg=="></script>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  <script defer type="text/javascript" id="script-bundle" src="/js/main.bundle.min.b6411b5d4cd56c0068d34c4acbce043846adad56b824e3d486a06d3459aed2eb7f7413874b7871cc2c822c8c8834cbed944022918bcc8cca710a962167c36d32.js"
+    integrity="sha512-tkEbXUzVbABo00xKy84EOEatrVa4JOPUhqBtNFmu0ut/dBOHS3hxzCyCLIyINMvtlEAikYvMjMpxCpYhZ8NtMg==" data-copy="" data-copied=""></script>
+  
+  
+  
+  <script src="/lib/zoom/zoom.min.37d2094687372da3f7343a221a470f6b8806f7891aa46a5a03966af7f0ebd38b9fe536cb154e6ad28f006d184b294525a7c4054b6bbb4be62d8b453b42db99bd.js" integrity="sha512-N9IJRoc3LaP3NDoiGkcPa4gG94kapGpaA5Zq9/Dr04uf5TbLFU5q0o8AbRhLKUUlp8QFS2u7S&#43;Yti0U7QtuZvQ=="></script>
+  
+  
+  
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+  <link rel="manifest" href="/site.webmanifest" />
+  
+  
+  
+  
+  
+  
+  
+  
+  <meta property="og:url" content="http://localhost:1313/blog/20250205125638-emacs_running_python_on_remote_server/">
+  <meta property="og:site_name" content="Guilherme Salome">
+  <meta property="og:title" content="Emacs Running Python on Remote Server">
+  <meta property="og:description" content="Create an executable that will run the code necessary to start Python in the remote server. My script is named remote-python:
+#!/usr/bin/env bash ssh hpclogin -t &#34;module load python/3.12; python $@&#34; # You could also change the working directory and load a virtual environment: # ssh hpclogin -t &#34;module load python/3.12; cd ~/Guilherme/CRON/aims-test/; source pyenv/bin/activate; python $@&#34; Make the script executable:
+chmod &#43;x remote-python Modify how Emacs launches the Python interpreter:">
+  <meta property="og:locale" content="en">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="blog">
+    <meta property="article:published_time" content="2025-02-25T11:33:53-05:00">
+    <meta property="article:modified_time" content="2025-02-25T11:33:53-05:00">
+    <meta property="article:tag" content="Org-Mode">
+    <meta property="article:tag" content="Babel">
+    <meta property="article:tag" content="Python">
+
+  
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Emacs Running Python on Remote Server">
+  <meta name="twitter:description" content="Create an executable that will run the code necessary to start Python in the remote server. My script is named remote-python:
+#!/usr/bin/env bash ssh hpclogin -t &#34;module load python/3.12; python $@&#34; # You could also change the working directory and load a virtual environment: # ssh hpclogin -t &#34;module load python/3.12; cd ~/Guilherme/CRON/aims-test/; source pyenv/bin/activate; python $@&#34; Make the script executable:
+chmod &#43;x remote-python Modify how Emacs launches the Python interpreter:">
+
+  
+  <script type="application/ld+json">
+  [{
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "articleSection": "Blog",
+    "name": "Emacs Running Python on Remote Server",
+    "headline": "Emacs Running Python on Remote Server",
+    
+    "abstract": "\u003cp\u003eCreate an executable that will run the code necessary to start Python in the remote server. My script is named \u003ccode\u003eremote-python\u003c\/code\u003e:\u003c\/p\u003e\n\u003cdiv class=\u0022highlight\u0022\u003e\u003cpre tabindex=\u00220\u0022 style=\u0022color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;\u0022\u003e\u003ccode class=\u0022language-bash\u0022 data-lang=\u0022bash\u0022\u003e\u003cspan style=\u0022display:flex;\u0022\u003e\u003cspan\u003e\u003cspan style=\u0022color:#75715e\u0022\u003e#!\/usr\/bin\/env bash\n\u003c\/span\u003e\u003c\/span\u003e\u003c\/span\u003e\u003cspan style=\u0022display:flex;\u0022\u003e\u003cspan\u003e\u003cspan style=\u0022color:#75715e\u0022\u003e\u003c\/span\u003essh hpclogin -t \u003cspan style=\u0022color:#e6db74\u0022\u003e\u0026#34;module load python\/3.12; python \u003c\/span\u003e$@\u003cspan style=\u0022color:#e6db74\u0022\u003e\u0026#34;\u003c\/span\u003e\n\u003c\/span\u003e\u003c\/span\u003e\u003cspan style=\u0022display:flex;\u0022\u003e\u003cspan\u003e\u003cspan style=\u0022color:#75715e\u0022\u003e# You could also change the working directory and load a virtual environment:\u003c\/span\u003e\n\u003c\/span\u003e\u003c\/span\u003e\u003cspan style=\u0022display:flex;\u0022\u003e\u003cspan\u003e\u003cspan style=\u0022color:#75715e\u0022\u003e# ssh hpclogin -t \u0026#34;module load python\/3.12; cd ~\/Guilherme\/CRON\/aims-test\/; source pyenv\/bin\/activate; python $@\u0026#34;\u003c\/span\u003e\n\u003c\/span\u003e\u003c\/span\u003e\u003c\/code\u003e\u003c\/pre\u003e\u003c\/div\u003e\u003cp\u003eMake the script executable:\u003c\/p\u003e\n\u003cdiv class=\u0022highlight\u0022\u003e\u003cpre tabindex=\u00220\u0022 style=\u0022color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;\u0022\u003e\u003ccode class=\u0022language-bash\u0022 data-lang=\u0022bash\u0022\u003e\u003cspan style=\u0022display:flex;\u0022\u003e\u003cspan\u003echmod \u002bx remote-python\n\u003c\/span\u003e\u003c\/span\u003e\u003c\/code\u003e\u003c\/pre\u003e\u003c\/div\u003e\u003cp\u003eModify how Emacs launches the Python interpreter:\u003c\/p\u003e",
+    "inLanguage": "en",
+    "url" : "http:\/\/localhost:1313\/blog\/20250205125638-emacs_running_python_on_remote_server\/",
+    "author" : {
+      "@type": "Person",
+      "name": "Guilherme Salome"
+    },
+    "copyrightYear": "2025",
+    "dateCreated": "2025-02-25T11:33:53-05:00",
+    "datePublished": "2025-02-25T11:33:53-05:00",
+    
+    "dateModified": "2025-02-25T11:33:53-05:00",
+    
+    "keywords": ["org-mode","babel","python"],
+    
+    "mainEntityOfPage": "true",
+    "wordCount": "977"
+  }]
+  </script>
+
+
+  
+  
+  <meta name="author" content="Guilherme Salome" />
+  
+  
+  
+
+<script src="/lib/jquery/jquery.slim.min.b0dca576e87d7eaa5850ae4e61759c065786cdb6489d68fcc82240539eebd5da522bdb4fda085ffd245808c8fe2acb2516408eb774ef26b5f6015fc6737c0ea8.js" integrity="sha512-sNylduh9fqpYUK5OYXWcBleGzbZInWj8yCJAU57r1dpSK9tP2ghf/SRYCMj&#43;KsslFkCOt3TvJrX2AV/Gc3wOqA=="></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+
+
+
+  
+  
+  <meta name="theme-color"/>
+  
+  
+</head>
+<body
+  class="flex flex-col h-screen px-6 m-auto text-lg leading-7 max-w-7xl bg-neutral text-neutral-900 dark:bg-neutral-800 dark:text-neutral sm:px-14 md:px-24 lg:px-32 scrollbar-thin scrollbar-track-neutral-200 scrollbar-thumb-neutral-400 dark:scrollbar-track-neutral-800 dark:scrollbar-thumb-neutral-600">
+  <div id="the-top" class="absolute flex self-center">
+    <a class="px-3 py-1 text-sm -translate-y-8 rounded-b-lg bg-primary-200 focus:translate-y-0 dark:bg-neutral-600"
+      href="#main-content"><span
+        class="font-bold text-primary-600 ltr:pr-2 rtl:pl-2 dark:text-primary-400">&darr;</span>Skip to main content</a>
+  </div>
+  
+  
+  <div style="padding-left:0;padding-right:0;padding-top:2px;padding-bottom:3px"
+    class="main-menu flex items-center justify-between px-4 py-6 sm:px-6 md:justify-start gap-x-3">
+    
+    <div class="flex flex-1 items-center justify-between">
+        <nav class="flex space-x-3">
+
+            
+            <a href="/" class="text-base font-medium text-gray-500 hover:text-gray-900">Guilherme Salome</a>
+            
+
+        </nav>
+        <nav class="hidden md:flex items-center gap-x-5 md:ml-12 h-12">
+
+            
+            
+            
+  <a href="/"  class="flex items-center text-gray-500 hover:text-primary-600 dark:hover:text-primary-400">
+    
+    <p class="text-base font-medium" title="">
+        About
+    </p>
+</a>
+
+
+
+            
+            
+  <a href="/blog/"  class="flex items-center text-gray-500 hover:text-primary-600 dark:hover:text-primary-400">
+    
+    <p class="text-base font-medium" title="">
+        Blog
+    </p>
+</a>
+
+
+
+            
+            
+  <a href="/consulting/"  class="flex items-center text-gray-500 hover:text-primary-600 dark:hover:text-primary-400">
+    
+    <p class="text-base font-medium" title="">
+        Consulting
+    </p>
+</a>
+
+
+
+            
+            
+  <a href="/resume.pdf"  class="flex items-center text-gray-500 hover:text-primary-600 dark:hover:text-primary-400">
+    
+    <p class="text-base font-medium" title="">
+        Resume
+    </p>
+</a>
+
+
+
+            
+            
+  <a href="/academic-work/"  class="flex items-center text-gray-500 hover:text-primary-600 dark:hover:text-primary-400">
+    
+    <p class="text-base font-medium" title="">
+        Academic Work
+    </p>
+</a>
+
+
+
+            
+            
+
+            
+
+
+            
+            <button id="search-button" aria-label="Search" class="text-base hover:text-primary-600 dark:hover:text-primary-400"
+                title="">
+                
+
+  <span class="relative block icon">
+    <svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="search" class="svg-inline--fa fa-search fa-w-16" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="currentColor" d="M505 442.7L405.3 343c-4.5-4.5-10.6-7-17-7H372c27.6-35.3 44-79.7 44-128C416 93.1 322.9 0 208 0S0 93.1 0 208s93.1 208 208 208c48.3 0 92.7-16.4 128-44v16.3c0 6.4 2.5 12.5 7 17l99.7 99.7c9.4 9.4 24.6 9.4 33.9 0l28.3-28.3c9.4-9.4 9.4-24.6.1-34zM208 336c-70.7 0-128-57.2-128-128 0-70.7 57.2-128 128-128 70.7 0 128 57.2 128 128 0 70.7-57.2 128-128 128z"/></svg>
+
+  </span>
+
+
+            </button>
+            
+
+
+            
+            
+            <div
+                class=" flex items-center">
+                <button id="appearance-switcher" aria-label="Dark mode switcher" type="button" class="text-base hover:text-primary-600 dark:hover:text-primary-400">
+                    <div class="flex items-center justify-center dark:hidden">
+                        
+
+  <span class="relative block icon">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="currentColor" d="M32 256c0-123.8 100.3-224 223.8-224c11.36 0 29.7 1.668 40.9 3.746c9.616 1.777 11.75 14.63 3.279 19.44C245 86.5 211.2 144.6 211.2 207.8c0 109.7 99.71 193 208.3 172.3c9.561-1.805 16.28 9.324 10.11 16.95C387.9 448.6 324.8 480 255.8 480C132.1 480 32 379.6 32 256z"/></svg>
+
+  </span>
+
+
+                    </div>
+                    <div class="items-center justify-center hidden dark:flex">
+                        
+
+  <span class="relative block icon">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="currentColor" d="M256 159.1c-53.02 0-95.1 42.98-95.1 95.1S202.1 351.1 256 351.1s95.1-42.98 95.1-95.1S309 159.1 256 159.1zM509.3 347L446.1 255.1l63.15-91.01c6.332-9.125 1.104-21.74-9.826-23.72l-109-19.7l-19.7-109c-1.975-10.93-14.59-16.16-23.72-9.824L256 65.89L164.1 2.736c-9.125-6.332-21.74-1.107-23.72 9.824L121.6 121.6L12.56 141.3C1.633 143.2-3.596 155.9 2.736 164.1L65.89 256l-63.15 91.01c-6.332 9.125-1.105 21.74 9.824 23.72l109 19.7l19.7 109c1.975 10.93 14.59 16.16 23.72 9.824L256 446.1l91.01 63.15c9.127 6.334 21.75 1.107 23.72-9.822l19.7-109l109-19.7C510.4 368.8 515.6 356.1 509.3 347zM256 383.1c-70.69 0-127.1-57.31-127.1-127.1c0-70.69 57.31-127.1 127.1-127.1s127.1 57.3 127.1 127.1C383.1 326.7 326.7 383.1 256 383.1z"/></svg>
+
+  </span>
+
+
+                    </div>
+                </button>
+            </div>
+            
+
+        </nav>
+        <div class="flex md:hidden items-center gap-x-5 md:ml-12 h-12">
+
+            <span></span>
+
+            
+
+
+            
+            <button id="search-button-mobile" aria-label="Search" class="text-base hover:text-primary-600 dark:hover:text-primary-400"
+                title="">
+                
+
+  <span class="relative block icon">
+    <svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="search" class="svg-inline--fa fa-search fa-w-16" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="currentColor" d="M505 442.7L405.3 343c-4.5-4.5-10.6-7-17-7H372c27.6-35.3 44-79.7 44-128C416 93.1 322.9 0 208 0S0 93.1 0 208s93.1 208 208 208c48.3 0 92.7-16.4 128-44v16.3c0 6.4 2.5 12.5 7 17l99.7 99.7c9.4 9.4 24.6 9.4 33.9 0l28.3-28.3c9.4-9.4 9.4-24.6.1-34zM208 336c-70.7 0-128-57.2-128-128 0-70.7 57.2-128 128-128 70.7 0 128 57.2 128 128 0 70.7-57.2 128-128 128z"/></svg>
+
+  </span>
+
+
+            </button>
+            
+
+            
+            
+            <button id="appearance-switcher-mobile" aria-label="Dark mode switcher" type="button" class="text-base hover:text-primary-600 dark:hover:text-primary-400 ltr:mr-1 rtl:ml-1">
+                <div class="flex items-center justify-center dark:hidden">
+                    
+
+  <span class="relative block icon">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="currentColor" d="M32 256c0-123.8 100.3-224 223.8-224c11.36 0 29.7 1.668 40.9 3.746c9.616 1.777 11.75 14.63 3.279 19.44C245 86.5 211.2 144.6 211.2 207.8c0 109.7 99.71 193 208.3 172.3c9.561-1.805 16.28 9.324 10.11 16.95C387.9 448.6 324.8 480 255.8 480C132.1 480 32 379.6 32 256z"/></svg>
+
+  </span>
+
+
+                </div>
+                <div class="items-center justify-center hidden dark:flex">
+                    
+
+  <span class="relative block icon">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="currentColor" d="M256 159.1c-53.02 0-95.1 42.98-95.1 95.1S202.1 351.1 256 351.1s95.1-42.98 95.1-95.1S309 159.1 256 159.1zM509.3 347L446.1 255.1l63.15-91.01c6.332-9.125 1.104-21.74-9.826-23.72l-109-19.7l-19.7-109c-1.975-10.93-14.59-16.16-23.72-9.824L256 65.89L164.1 2.736c-9.125-6.332-21.74-1.107-23.72 9.824L121.6 121.6L12.56 141.3C1.633 143.2-3.596 155.9 2.736 164.1L65.89 256l-63.15 91.01c-6.332 9.125-1.105 21.74 9.824 23.72l109 19.7l19.7 109c1.975 10.93 14.59 16.16 23.72 9.824L256 446.1l91.01 63.15c9.127 6.334 21.75 1.107 23.72-9.822l19.7-109l109-19.7C510.4 368.8 515.6 356.1 509.3 347zM256 383.1c-70.69 0-127.1-57.31-127.1-127.1c0-70.69 57.31-127.1 127.1-127.1s127.1 57.3 127.1 127.1C383.1 326.7 326.7 383.1 256 383.1z"/></svg>
+
+  </span>
+
+
+                </div>
+            </button>
+            
+
+        </div>
+    </div>
+    <div class="-my-2 md:hidden">
+
+        <label id="menu-button" class="block">
+            
+            <div class="cursor-pointer hover:text-primary-600 dark:hover:text-primary-400">
+                
+
+  <span class="relative block icon">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path fill="currentColor" d="M0 96C0 78.33 14.33 64 32 64H416C433.7 64 448 78.33 448 96C448 113.7 433.7 128 416 128H32C14.33 128 0 113.7 0 96zM0 256C0 238.3 14.33 224 32 224H416C433.7 224 448 238.3 448 256C448 273.7 433.7 288 416 288H32C14.33 288 0 273.7 0 256zM416 448H32C14.33 448 0 433.7 0 416C0 398.3 14.33 384 32 384H416C433.7 384 448 398.3 448 416C448 433.7 433.7 448 416 448z"/></svg>
+
+  </span>
+
+
+            </div>
+            <div id="menu-wrapper" style="padding-top:5px;"
+                class="fixed inset-0 z-30 invisible w-screen h-screen m-0 overflow-auto transition-opacity opacity-0 cursor-default bg-neutral-100/50 backdrop-blur-sm dark:bg-neutral-900/50">
+                <ul
+                    class="flex space-y-2 mt-3 flex-col items-end w-full px-6 py-6 mx-auto overflow-visible list-none ltr:text-right rtl:text-left max-w-7xl">
+
+                    <li id="menu-close-button">
+                        <span
+                            class="cursor-pointer inline-block align-text-bottom hover:text-primary-600 dark:hover:text-primary-400">
+
+  <span class="relative block icon">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><path fill="currentColor" d="M310.6 361.4c12.5 12.5 12.5 32.75 0 45.25C304.4 412.9 296.2 416 288 416s-16.38-3.125-22.62-9.375L160 301.3L54.63 406.6C48.38 412.9 40.19 416 32 416S15.63 412.9 9.375 406.6c-12.5-12.5-12.5-32.75 0-45.25l105.4-105.4L9.375 150.6c-12.5-12.5-12.5-32.75 0-45.25s32.75-12.5 45.25 0L160 210.8l105.4-105.4c12.5-12.5 32.75-12.5 45.25 0s12.5 32.75 0 45.25l-105.4 105.4L310.6 361.4z"/></svg>
+
+  </span>
+
+</span>
+                    </li>
+
+                    
+
+                    
+  <li class="mt-1">
+    <a href="/"  class="flex items-center text-gray-500 hover:text-primary-600 dark:hover:text-primary-400">
+        
+        <p class="text-bg font-bg" title="">
+            About
+        </p>
+    </a>
+</li>
+
+
+
+
+                    
+
+                    
+  <li class="mt-1">
+    <a href="/blog/"  class="flex items-center text-gray-500 hover:text-primary-600 dark:hover:text-primary-400">
+        
+        <p class="text-bg font-bg" title="">
+            Blog
+        </p>
+    </a>
+</li>
+
+
+
+
+                    
+
+                    
+  <li class="mt-1">
+    <a href="/consulting/"  class="flex items-center text-gray-500 hover:text-primary-600 dark:hover:text-primary-400">
+        
+        <p class="text-bg font-bg" title="">
+            Consulting
+        </p>
+    </a>
+</li>
+
+
+
+
+                    
+
+                    
+  <li class="mt-1">
+    <a href="/resume.pdf"  class="flex items-center text-gray-500 hover:text-primary-600 dark:hover:text-primary-400">
+        
+        <p class="text-bg font-bg" title="">
+            Resume
+        </p>
+    </a>
+</li>
+
+
+
+
+                    
+
+                    
+  <li class="mt-1">
+    <a href="/academic-work/"  class="flex items-center text-gray-500 hover:text-primary-600 dark:hover:text-primary-400">
+        
+        <p class="text-bg font-bg" title="">
+            Academic Work
+        </p>
+    </a>
+</li>
+
+
+
+
+                    
+
+                </ul>
+                
+                
+
+            </div>
+        </label>
+    </div>
+</div>
+
+
+
+
+
+  
+  <div class="relative flex flex-col grow">
+    <main id="main-content" class="grow">
+      
+
+
+<article>
+  
+
+  <header id="single_header" class="mt-5 max-w-prose">
+    
+    <h1 class="mt-0 text-4xl font-extrabold text-neutral-900 dark:text-neutral">
+      Emacs Running Python on Remote Server
+    </h1>
+    <div class="mt-1 mb-6 text-base text-neutral-500 dark:text-neutral-400 print:hidden">
+      
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="flex flex-row flex-wrap items-center">
+  
+  
+  <time datetime="2025-02-25T11:33:53-05:00">February 25, 2025</time>
+  
+
+  
+  
+</div>
+
+
+
+
+
+<div class="flex flex-row flex-wrap items-center">
+  
+  
+  
+  
+  <span style="margin-top:0.5rem" class="mr-2" onclick="window.open(&#34;/categories/emacs/&#34;,'_self');return false;">
+    <span class="flex" style="cursor: pointer;">
+  <span class="rounded-md border border-primary-400 px-1 py-[1px] text-xs font-normal text-primary-700 dark:border-primary-600 dark:text-primary-400">
+    Emacs
+  </span>
+</span>
+  </span>
+  
+  
+  
+  
+  
+  
+  
+  <span style="margin-top:0.5rem" class="mr-2" onclick="window.open(&#34;/tags/org-mode/&#34;,'_self');return false;">
+    <span class="flex" style="cursor: pointer;">
+  <span class="rounded-md border border-primary-400 px-1 py-[1px] text-xs font-normal text-primary-700 dark:border-primary-600 dark:text-primary-400">
+    Org-Mode
+  </span>
+</span>
+  </span>
+  
+  <span style="margin-top:0.5rem" class="mr-2" onclick="window.open(&#34;/tags/babel/&#34;,'_self');return false;">
+    <span class="flex" style="cursor: pointer;">
+  <span class="rounded-md border border-primary-400 px-1 py-[1px] text-xs font-normal text-primary-700 dark:border-primary-600 dark:text-primary-400">
+    Babel
+  </span>
+</span>
+  </span>
+  
+  <span style="margin-top:0.5rem" class="mr-2" onclick="window.open(&#34;/tags/python/&#34;,'_self');return false;">
+    <span class="flex" style="cursor: pointer;">
+  <span class="rounded-md border border-primary-400 px-1 py-[1px] text-xs font-normal text-primary-700 dark:border-primary-600 dark:text-primary-400">
+    Python
+  </span>
+</span>
+  </span>
+  
+  
+  
+  
+</div>
+
+
+
+
+    </div>
+
+    
+    
+    
+    
+    
+
+    
+
+    
+      
+      
+
+      
+
+      
+
+    
+
+  </header>
+  
+  <section class="flex flex-col max-w-full mt-0 prose dark:prose-invert lg:flex-row">
+    
+    
+
+      <div class="min-w-0 min-h-0 max-w-fit">
+        
+        
+
+
+        <div class="article-content max-w-prose mb-20">
+          <p>Create an executable that will run the code necessary to start Python in the remote server. My script is named <code>remote-python</code>:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e">#!/usr/bin/env bash
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>ssh hpclogin -t <span style="color:#e6db74">&#34;module load python/3.12; python </span>$@<span style="color:#e6db74">&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># You could also change the working directory and load a virtual environment:</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># ssh hpclogin -t &#34;module load python/3.12; cd ~/Guilherme/CRON/aims-test/; source pyenv/bin/activate; python $@&#34;</span>
+</span></span></code></pre></div><p>Make the script executable:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>chmod +x remote-python
+</span></span></code></pre></div><p>Modify how Emacs launches the Python interpreter:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-elisp" data-lang="elisp"><span style="display:flex;"><span>(setq python-shell-interpreter <span style="color:#e6db74">&#34;/Users/C304095/Library/CloudStorage/GoogleDrive-guilhermesalome@gmail.com/My Drive/Emacs/bin/remote-python&#34;</span>
+</span></span><span style="display:flex;"><span>      python-shell-interpreter-args <span style="color:#e6db74">&#34;-i&#34;</span>
+</span></span><span style="display:flex;"><span>      python-shell-completion-native-enable <span style="color:#66d9ef">nil</span>)
+</span></span></code></pre></div><p>Starting the inferior python buffer with <code>M-x run-python</code> works and you can send Python code to that buffer with <code>M-x python-shell-send-buffer</code>.
+However, I could not get the Babel code blocks to properly execute in the remote server.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>print(<span style="color:#e6db74">&#34;Hello!&#34;</span>)
+</span></span></code></pre></div><p>Evaluating the code block above fails with a <code>FileNotFoundError</code> because Babel seems to be trying to write the code to a temporary file, and then getting it evaluated in the session, instead of sending the code directly as text.</p>
+<p>The function that is called when the code block is executed is <code>org-babel-execute:python</code>:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-elisp" data-lang="elisp"><span style="display:flex;"><span>(defun org-babel-execute:python (body params)
+</span></span><span style="display:flex;"><span>  <span style="color:#e6db74">&#34;Execute Python BODY according to PARAMS. This function is called by </span><span style="color:#e6db74">`org-babel-execute-src-block&#39;</span><span style="color:#e6db74">.&#34;</span>
+</span></span><span style="display:flex;"><span>  (let* ((org-babel-python-command
+</span></span><span style="display:flex;"><span>	  (or (<span style="color:#a6e22e">cdr</span> (<span style="color:#a6e22e">assq</span> :python params))
+</span></span><span style="display:flex;"><span>	      org-babel-python-command))
+</span></span><span style="display:flex;"><span>	 (session (org-babel-python-initiate-session
+</span></span><span style="display:flex;"><span>		   (<span style="color:#a6e22e">cdr</span> (<span style="color:#a6e22e">assq</span> :session params))))
+</span></span><span style="display:flex;"><span>	 (graphics-file (and (<span style="color:#a6e22e">member</span> <span style="color:#e6db74">&#34;graphics&#34;</span> (<span style="color:#a6e22e">assq</span> :result-params params))
+</span></span><span style="display:flex;"><span>			     (org-babel-graphical-output-file params)))
+</span></span><span style="display:flex;"><span>         (result-params (<span style="color:#a6e22e">cdr</span> (<span style="color:#a6e22e">assq</span> :result-params params)))
+</span></span><span style="display:flex;"><span>         (result-type (<span style="color:#a6e22e">cdr</span> (<span style="color:#a6e22e">assq</span> :result-type params)))
+</span></span><span style="display:flex;"><span>	 (return-val (when (<span style="color:#a6e22e">eq</span> result-type <span style="color:#e6db74">&#39;value</span>)
+</span></span><span style="display:flex;"><span>		       (<span style="color:#a6e22e">cdr</span> (<span style="color:#a6e22e">assq</span> :return params))))
+</span></span><span style="display:flex;"><span>	 (preamble (<span style="color:#a6e22e">cdr</span> (<span style="color:#a6e22e">assq</span> :preamble params)))
+</span></span><span style="display:flex;"><span>	 (async (org-babel-comint-use-async params))
+</span></span><span style="display:flex;"><span>         (full-body
+</span></span><span style="display:flex;"><span>	  (<span style="color:#a6e22e">concat</span>
+</span></span><span style="display:flex;"><span>	   (org-babel-expand-body:generic
+</span></span><span style="display:flex;"><span>	    body params
+</span></span><span style="display:flex;"><span>	    (org-babel-variable-assignments:python params))
+</span></span><span style="display:flex;"><span>	   (when return-val
+</span></span><span style="display:flex;"><span>	     (<span style="color:#a6e22e">format</span> (if session <span style="color:#e6db74">&#34;\n%s&#34;</span> <span style="color:#e6db74">&#34;\nreturn %s&#34;</span>) return-val))))
+</span></span><span style="display:flex;"><span>         (result (org-babel-python-evaluate
+</span></span><span style="display:flex;"><span>		  session full-body result-type
+</span></span><span style="display:flex;"><span>		  result-params preamble async graphics-file)))
+</span></span><span style="display:flex;"><span>    (org-babel-reassemble-table
+</span></span><span style="display:flex;"><span>     result
+</span></span><span style="display:flex;"><span>     (org-babel-pick-name (<span style="color:#a6e22e">cdr</span> (<span style="color:#a6e22e">assq</span> :colname-names params))
+</span></span><span style="display:flex;"><span>			  (<span style="color:#a6e22e">cdr</span> (<span style="color:#a6e22e">assq</span> :colnames params)))
+</span></span><span style="display:flex;"><span>     (org-babel-pick-name (<span style="color:#a6e22e">cdr</span> (<span style="color:#a6e22e">assq</span> :rowname-names params))
+</span></span><span style="display:flex;"><span>			  (<span style="color:#a6e22e">cdr</span> (<span style="color:#a6e22e">assq</span> :rownames params))))))
+</span></span></code></pre></div><p>We will try to overwrite this function so that we send the code directly to the Python buffer:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-elisp" data-lang="elisp"><span style="display:flex;"><span>(defun my-org-babel-execute:python (body params)
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e">;;</span>
+</span></span><span style="display:flex;"><span>  (<span style="color:#a6e22e">message</span> (<span style="color:#a6e22e">concat</span> <span style="color:#e6db74">&#34;This is the body:\n&#34;</span> body))
+</span></span><span style="display:flex;"><span>  (let ((proc (python-shell-get-process))) (python-shell-send-string body proc) <span style="color:#e6db74">&#34;&#34;</span>)
+</span></span><span style="display:flex;"><span>  )
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>(advice-add <span style="color:#e6db74">&#39;org-babel-execute:python</span> :override <span style="color:#a6e22e">#&#39;</span>my-org-babel-execute:python)
+</span></span></code></pre></div><p>We can now start the Python inferior process with <code>M-x run-python</code>, and then execute a code block, and it will get sent to the associated buffer.</p>
+<p>However, when the code block gets too long, org-babel still tries to write the contents to a file instead of sending them directly. For example, the code block below fails:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>print(<span style="color:#e6db74">&#34;Hello!&#34;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">foo</span>():
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># This is a long function</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># With a lot of text</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># It might break something in org-babel</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Let&#39;s make this really long</span>
+</span></span><span style="display:flex;"><span>    x <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span> <span style="color:#f92672">+</span> <span style="color:#ae81ff">2</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> x
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">fa</span>():
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># This is a long function</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># With a lot of text</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># It might break something in org-babel</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Let&#39;s make this really long</span>
+</span></span><span style="display:flex;"><span>    x <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span> <span style="color:#f92672">+</span> <span style="color:#ae81ff">2</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> x
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">fi</span>():
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># This is a long function</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># With a lot of text</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># It might break something in org-babel</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Let&#39;s make this really long</span>
+</span></span><span style="display:flex;"><span>    x <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span> <span style="color:#f92672">+</span> <span style="color:#ae81ff">2</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> x
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">fo</span>():
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># This is a long function</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># With a lot of text</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># It might break something in org-babel</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Let&#39;s make this really long</span>
+</span></span><span style="display:flex;"><span>    x <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span> <span style="color:#f92672">+</span> <span style="color:#ae81ff">2</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> x
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">fu</span>():
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># This is a long function</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># With a lot of text</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># It might break something in org-babel</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Let&#39;s make this really long</span>
+</span></span><span style="display:flex;"><span>    x <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span> <span style="color:#f92672">+</span> <span style="color:#ae81ff">2</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> x
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>print(<span style="color:#e6db74">&#34;World!&#34;</span>)
+</span></span></code></pre></div><p>The function <code>python-shell-send-string</code> is behind this issue, since the <code>message</code> prints the content of the code block correctly. Inspecting the send string function:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-elisp" data-lang="elisp"><span style="display:flex;"><span>(defun python-shell-send-string (<span style="color:#a6e22e">string</span> <span style="color:#66d9ef">&amp;optional</span> process msg)
+</span></span><span style="display:flex;"><span>  <span style="color:#e6db74">&#34;Send STRING to inferior Python PROCESS.
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">When optional argument MSG is non-nil, forces display of a
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">user-friendly message if there&#39;s no process running; defaults to
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">t when called interactively.&#34;</span>
+</span></span><span style="display:flex;"><span>  (interactive
+</span></span><span style="display:flex;"><span>   (<span style="color:#a6e22e">list</span> (<span style="color:#a6e22e">read-string</span> <span style="color:#e6db74">&#34;Python command: &#34;</span>) <span style="color:#66d9ef">nil</span> <span style="color:#66d9ef">t</span>))
+</span></span><span style="display:flex;"><span>  (let ((process (or process (python-shell-get-process-or-error msg)))
+</span></span><span style="display:flex;"><span>        (code (<span style="color:#a6e22e">format</span> <span style="color:#e6db74">&#34;__PYTHON_EL_eval(%s, %s)\n&#34;</span>
+</span></span><span style="display:flex;"><span>                      (python-shell--encode-string <span style="color:#a6e22e">string</span>)
+</span></span><span style="display:flex;"><span>                      (python-shell--encode-string (or (<span style="color:#a6e22e">buffer-file-name</span>)
+</span></span><span style="display:flex;"><span>                                                       <span style="color:#e6db74">&#34;&lt;string&gt;&#34;</span>)))))
+</span></span><span style="display:flex;"><span>    (unless python-shell-output-filter-in-progress
+</span></span><span style="display:flex;"><span>      (with-current-buffer (<span style="color:#a6e22e">process-buffer</span> process)
+</span></span><span style="display:flex;"><span>        (save-excursion
+</span></span><span style="display:flex;"><span>          (<span style="color:#a6e22e">goto-char</span> (<span style="color:#a6e22e">process-mark</span> process))
+</span></span><span style="display:flex;"><span>          (<span style="color:#a6e22e">insert-before-markers</span> <span style="color:#e6db74">&#34;\n&#34;</span>))))
+</span></span><span style="display:flex;"><span>    (if (or (<span style="color:#a6e22e">null</span> (<span style="color:#a6e22e">process-tty-name</span> process))
+</span></span><span style="display:flex;"><span>            (<span style="color:#a6e22e">&lt;=</span> (<span style="color:#a6e22e">string-bytes</span> code)
+</span></span><span style="display:flex;"><span>                (or (bound-and-true-p comint-max-line-length)
+</span></span><span style="display:flex;"><span>                    <span style="color:#ae81ff">1024</span>))) <span style="color:#75715e">;; For Emacs &lt; 28</span>
+</span></span><span style="display:flex;"><span>        (comint-send-string process code)
+</span></span><span style="display:flex;"><span>      (let* ((temp-file-name (with-current-buffer (<span style="color:#a6e22e">process-buffer</span> process)
+</span></span><span style="display:flex;"><span>                               (python-shell--save-temp-file <span style="color:#a6e22e">string</span>)))
+</span></span><span style="display:flex;"><span>             (file-name (or (<span style="color:#a6e22e">buffer-file-name</span>) temp-file-name)))
+</span></span></code></pre></div><p>There is a <code>comint-max-line-length</code> that seems to trigger the writing to a temporary file. I thought about using <code>python-shell-send-buffer</code>, but it also ends up calling the same <code>python-shell-send-string</code> function.</p>
+<p>Another function we could use to send the code is <code>comint-send-string</code>.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-elisp" data-lang="elisp"><span style="display:flex;"><span>(defun my-org-babel-execute:python (body params)
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e">;;</span>
+</span></span><span style="display:flex;"><span>  (<span style="color:#a6e22e">message</span> (<span style="color:#a6e22e">concat</span> <span style="color:#e6db74">&#34;This is the body:\n&#34;</span> body))
+</span></span><span style="display:flex;"><span>  (let ((proc (python-shell-get-process))) (comint-send-string proc (<span style="color:#a6e22e">concat</span> body <span style="color:#e6db74">&#34;\n&#34;</span>)) <span style="color:#e6db74">&#34;&#34;</span>)
+</span></span><span style="display:flex;"><span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>(advice-add <span style="color:#e6db74">&#39;org-babel-execute:python</span> :override <span style="color:#a6e22e">#&#39;</span>my-org-babel-execute:python)
+</span></span></code></pre></div><p>This function seems to solve the problem and even the larger code block is sent to the inferior buffer.</p>
+<p>The block below still fails though:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">import</span> warnings
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> jax.numpy <span style="color:#66d9ef">as</span> jnp
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> numpyro
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> numpyro.distributions <span style="color:#66d9ef">as</span> dist
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> jax <span style="color:#f92672">import</span> random
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> numpyro.handlers <span style="color:#f92672">import</span> do, seed
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> numpyro.infer <span style="color:#f92672">import</span> SVI, Trace_ELBO, init_to_feasible
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> numpyro.infer.autoguide <span style="color:#f92672">import</span> AutoNormal
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> aims.model <span style="color:#f92672">import</span> ImpactModel
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>warnings<span style="color:#f92672">.</span>filterwarnings(<span style="color:#e6db74">&#34;ignore&#34;</span>, category<span style="color:#f92672">=</span><span style="color:#a6e22e">UserWarning</span>, module<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;zarr&#34;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>print(<span style="color:#e6db74">&#34;Before function definition&#34;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Define the model using NumPyro primitives</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">model</span>(X, C, y<span style="color:#f92672">=</span><span style="color:#66d9ef">None</span>):
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">## Assign priors on latent/unobservable variables</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Y &lt;- C -&gt; Z causal paths</span>
+</span></span><span style="display:flex;"><span>    beta_cz <span style="color:#f92672">=</span> numpyro<span style="color:#f92672">.</span>sample(<span style="color:#e6db74">&#34;beta_cz&#34;</span>, dist<span style="color:#f92672">.</span>Normal(<span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">10</span>))
+</span></span><span style="display:flex;"><span>    beta_cy <span style="color:#f92672">=</span> numpyro<span style="color:#f92672">.</span>sample(<span style="color:#e6db74">&#34;beta_cy&#34;</span>, dist<span style="color:#f92672">.</span>Normal(<span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">10</span>))
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Z -&gt; Y causal path</span>
+</span></span><span style="display:flex;"><span>    beta_zy <span style="color:#f92672">=</span> numpyro<span style="color:#f92672">.</span>sample(<span style="color:#e6db74">&#34;beta_zy&#34;</span>, dist<span style="color:#f92672">.</span>Normal(<span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">10</span>))
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># X -&gt; Z causal path</span>
+</span></span><span style="display:flex;"><span>    beta_xz <span style="color:#f92672">=</span> numpyro<span style="color:#f92672">.</span>sample(<span style="color:#e6db74">&#34;beta_xz&#34;</span>, dist<span style="color:#f92672">.</span>Normal(<span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">10</span>))
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Intercepts</span>
+</span></span><span style="display:flex;"><span>    beta_z <span style="color:#f92672">=</span> numpyro<span style="color:#f92672">.</span>sample(<span style="color:#e6db74">&#34;beta_z&#34;</span>, dist<span style="color:#f92672">.</span>Normal(<span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">10</span>))
+</span></span><span style="display:flex;"><span>    beta_y <span style="color:#f92672">=</span> numpyro<span style="color:#f92672">.</span>sample(<span style="color:#e6db74">&#34;beta_y&#34;</span>, dist<span style="color:#f92672">.</span>Normal(<span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">10</span>))
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Observation noise on Y</span>
+</span></span><span style="display:flex;"><span>    sigma <span style="color:#f92672">=</span> numpyro<span style="color:#f92672">.</span>sample(<span style="color:#e6db74">&#34;sigma&#34;</span>, dist<span style="color:#f92672">.</span>HalfNormal(<span style="color:#ae81ff">1</span>))
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">with</span> numpyro<span style="color:#f92672">.</span>plate(<span style="color:#e6db74">&#34;data&#34;</span>, size<span style="color:#f92672">=</span>len(X)):
+</span></span><span style="display:flex;"><span>        z <span style="color:#f92672">=</span> numpyro<span style="color:#f92672">.</span>sample(
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;z&#34;</span>,
+</span></span><span style="display:flex;"><span>            dist<span style="color:#f92672">.</span>Normal(
+</span></span><span style="display:flex;"><span>                beta_z <span style="color:#f92672">+</span> beta_cz <span style="color:#f92672">*</span> C<span style="color:#f92672">.</span>squeeze() <span style="color:#f92672">+</span> beta_xz <span style="color:#f92672">*</span> X<span style="color:#f92672">.</span>squeeze(), <span style="color:#ae81ff">1</span>
+</span></span><span style="display:flex;"><span>            ),
+</span></span><span style="display:flex;"><span>        )
+</span></span><span style="display:flex;"><span>        mu <span style="color:#f92672">=</span> beta_y <span style="color:#f92672">+</span> (beta_zy <span style="color:#f92672">*</span> z) <span style="color:#f92672">+</span> (beta_cy <span style="color:#f92672">*</span> C<span style="color:#f92672">.</span>squeeze())
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> numpyro<span style="color:#f92672">.</span>sample(
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;y&#34;</span>, dist<span style="color:#f92672">.</span>Normal(mu, sigma), obs<span style="color:#f92672">=</span><span style="color:#66d9ef">None</span> <span style="color:#66d9ef">if</span> y <span style="color:#f92672">is</span> <span style="color:#66d9ef">None</span> <span style="color:#66d9ef">else</span> y
+</span></span><span style="display:flex;"><span>        )
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>print(<span style="color:#e6db74">&#34;After function definition&#34;</span>)
+</span></span></code></pre></div><p>Increasing the <code>comint-max-line-lenght</code> seems to fix the problem, but also requires going back to <code>python-shell-send-string</code> to work:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-elisp" data-lang="elisp"><span style="display:flex;"><span>(defun my-org-babel-execute:python (body params)
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e">;;</span>
+</span></span><span style="display:flex;"><span>  (<span style="color:#a6e22e">message</span> (<span style="color:#a6e22e">concat</span> <span style="color:#e6db74">&#34;This is the body:\n&#34;</span> body))
+</span></span><span style="display:flex;"><span>  (setq comint-max-line-length <span style="color:#ae81ff">100000</span>)
+</span></span><span style="display:flex;"><span>  (let ((proc (python-shell-get-process))) (python-shell-send-string (<span style="color:#a6e22e">concat</span> body <span style="color:#e6db74">&#34;\n&#34;</span>) proc) <span style="color:#e6db74">&#34;&#34;</span>)
+</span></span><span style="display:flex;"><span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>(advice-add <span style="color:#e6db74">&#39;org-babel-execute:python</span> :override <span style="color:#a6e22e">#&#39;</span>my-org-babel-execute:python)
+</span></span></code></pre></div>
+          
+          
+          
+        </div>
+        
+        
+
+        
+        
+
+          
+      </div>
+     
+      
+      
+        
+        
+          
+          
+        
+      <script>
+        var oid = "views_blog\/20250205125638-emacs_running_python_on_remote_server.md"
+        var oid_likes = "likes_blog\/20250205125638-emacs_running_python_on_remote_server.md"
+      </script>
+      
+      
+      <script type="text/javascript" src="/js/page.min.0860cf4e04fa2d72cc33ddba263083464d48f67de06114529043cb4623319efed4f484fd7f1730df5abea0e2da6f3538855634081d02f2d6e920b956f063e823.js" integrity="sha512-CGDPTgT6LXLMM926JjCDRk1I9n3gYRRSkEPLRiMxnv7U9IT9fxcw31q&#43;oOLabzU4hVY0CB0C8tbpILlW8GPoIw=="></script>
+      
+  
+    </section>
+  <footer class="pt-8 max-w-prose print:hidden">
+
+    
+  
+    
+    
+    
+    <div class="pt-8">
+      <hr class="border-dotted border-neutral-300 dark:border-neutral-600" />
+      <div class="flex justify-between pt-3">
+        <span>
+          
+        </span>
+        <span>
+          
+            <a class="flex text-right group ml-3" href="/blog/20250205125638-executing_python_code_blocks_on_a_remote_server/">
+              <span class="flex flex-col">
+                <span
+                  class="mt-[0.1rem] leading-6 group-hover:underline group-hover:decoration-primary-500"
+                  >Executing Python Code Blocks on a Remote Server</span
+                >
+                <span class="mt-[0.1rem] text-xs text-neutral-500 dark:text-neutral-400">
+                  
+                    <time datetime="2025-02-28T22:00:04-05:00">February 28, 2025</time>
+                  
+                </span>
+              </span>
+              <span
+                class="ml-3 text-neutral-700 group-hover:text-primary-600 ltr:inline rtl:hidden dark:text-neutral dark:group-hover:text-primary-400"
+                >&rarr;</span
+              >
+              <span
+                class="mr-3 text-neutral-700 group-hover:text-primary-600 ltr:hidden rtl:inline dark:text-neutral dark:group-hover:text-primary-400"
+                >&larr;</span
+              >
+            </a>
+          
+        </span>
+      </div>
+    </div>
+  
+
+
+    
+  </footer>
+</article>
+
+      <div id="top-scroller" class="pointer-events-none absolute top-[110vh] bottom-0 w-12 ltr:right-0 rtl:left-0">
+  <a href="#the-top"
+    class="pointer-events-auto sticky top-[calc(100vh-5.5rem)] flex h-12 w-12 mb-16 items-center justify-center rounded-full bg-neutral/50 text-xl text-neutral-700 hover:text-primary-600 dark:bg-neutral-800/50 dark:text-neutral dark:hover:text-primary-400"
+    aria-label="Scroll to top" title="Scroll to top">
+    &uarr;
+  </a>
+</div>
+    </main><footer id="site-footer" class="py-10 print:hidden">
+  
+  
+    
+  
+  <div class="flex items-center justify-between">
+
+    
+    
+    <p class="text-sm text-neutral-500 dark:text-neutral-400">
+      &copy;
+      2025
+      Guilherme Salome
+    </p>
+    
+
+    
+    
+    <p class="text-xs text-neutral-500 dark:text-neutral-400">
+      
+      
+      Powered by <a class="hover:underline hover:decoration-primary-400 hover:text-primary-500"
+        href="https://gohugo.io/" target="_blank" rel="noopener noreferrer">Hugo</a> &amp; <a class="hover:underline hover:decoration-primary-400 hover:text-primary-500"
+        href="https://blowfish.page/" target="_blank" rel="noopener noreferrer">Blowfish</a>
+    </p>
+    
+
+  </div>
+  <script>
+    
+    mediumZoom(document.querySelectorAll("img:not(.nozoom)"), {
+      margin: 24,
+      background: 'rgba(0,0,0,0.5)',
+      scrollOffset: 0,
+    })
+    
+  </script>
+  
+  
+  <script type="text/javascript" src="/js/process.min.ee03488f19c93c2efb199e2e3014ea5f3cb2ce7d45154adb3399a158cac27ca52831db249ede5bb602700ef87eb02434139de0858af1818ab0fb4182472204a4.js" integrity="sha512-7gNIjxnJPC77GZ4uMBTqXzyyzn1FFUrbM5mhWMrCfKUoMdsknt5btgJwDvh&#43;sCQ0E53ghYrxgYqw&#43;0GCRyIEpA=="></script>
+  
+  
+</footer>
+<div
+  id="search-wrapper"
+  class="invisible fixed inset-0 flex h-screen w-screen cursor-default flex-col bg-neutral-500/50 p-4 backdrop-blur-sm dark:bg-neutral-900/50 sm:p-6 md:p-[10vh] lg:p-[12vh]"
+  data-url="http://localhost:1313/"
+  style="z-index:500"
+>
+  <div
+    id="search-modal"
+    class="flex flex-col w-full max-w-3xl min-h-0 mx-auto border rounded-md shadow-lg top-20 border-neutral-200 bg-neutral dark:border-neutral-700 dark:bg-neutral-800"
+  >
+    <header class="relative z-10 flex items-center justify-between flex-none px-2">
+      <form class="flex items-center flex-auto min-w-0">
+        <div class="flex items-center justify-center w-8 h-8 text-neutral-400">
+          
+
+  <span class="relative block icon">
+    <svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="search" class="svg-inline--fa fa-search fa-w-16" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="currentColor" d="M505 442.7L405.3 343c-4.5-4.5-10.6-7-17-7H372c27.6-35.3 44-79.7 44-128C416 93.1 322.9 0 208 0S0 93.1 0 208s93.1 208 208 208c48.3 0 92.7-16.4 128-44v16.3c0 6.4 2.5 12.5 7 17l99.7 99.7c9.4 9.4 24.6 9.4 33.9 0l28.3-28.3c9.4-9.4 9.4-24.6.1-34zM208 336c-70.7 0-128-57.2-128-128 0-70.7 57.2-128 128-128 70.7 0 128 57.2 128 128 0 70.7-57.2 128-128 128z"/></svg>
+
+  </span>
+
+
+        </div>
+        <input
+          type="search"
+          id="search-query"
+          class="flex flex-auto h-12 mx-1 bg-transparent appearance-none focus:outline-dotted focus:outline-2 focus:outline-transparent"
+          placeholder="Search"
+          tabindex="0"
+        />
+      </form>
+      <button
+        id="close-search-button"
+        class="flex items-center justify-center w-8 h-8 text-neutral-700 hover:text-primary-600 dark:text-neutral dark:hover:text-primary-400"
+        title="Close (Esc)"
+      >
+        
+
+  <span class="relative block icon">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><path fill="currentColor" d="M310.6 361.4c12.5 12.5 12.5 32.75 0 45.25C304.4 412.9 296.2 416 288 416s-16.38-3.125-22.62-9.375L160 301.3L54.63 406.6C48.38 412.9 40.19 416 32 416S15.63 412.9 9.375 406.6c-12.5-12.5-12.5-32.75 0-45.25l105.4-105.4L9.375 150.6c-12.5-12.5-12.5-32.75 0-45.25s32.75-12.5 45.25 0L160 210.8l105.4-105.4c12.5-12.5 32.75-12.5 45.25 0s12.5 32.75 0 45.25l-105.4 105.4L310.6 361.4z"/></svg>
+
+  </span>
+
+
+      </button>
+    </header>
+    <section class="flex-auto px-2 overflow-auto">
+      <ul id="search-results">
+        
+      </ul>
+    </section>
+  </div>
+</div>
+
+  </div>
+</body>
+
+</html>

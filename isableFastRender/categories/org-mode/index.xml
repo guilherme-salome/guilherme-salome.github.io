@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Org-Mode on </title>
+    <link>http://localhost:1313/categories/org-mode/</link>
+    <description>Recent content in Org-Mode on </description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <managingEditor>guilhermesalome@gmail.com (Guilherme Salome)</managingEditor>
+    <webMaster>guilhermesalome@gmail.com (Guilherme Salome)</webMaster>
+    <copyright>© 2025 Guilherme Salome</copyright>
+    <lastBuildDate>Tue, 25 Feb 2025 11:33:00 -0500</lastBuildDate><atom:link href="http://localhost:1313/categories/org-mode/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Emacs Running Python on Remote Server</title>
+      <link>http://localhost:1313/blog/20250205125638-emacs_running_python_on_remote_server/</link>
+      <pubDate>Tue, 25 Feb 2025 11:33:00 -0500</pubDate>
+      <author>guilhermesalome@gmail.com (Guilherme Salome)</author>
+      <guid>http://localhost:1313/blog/20250205125638-emacs_running_python_on_remote_server/</guid>
+      <description>&lt;p&gt;Create an executable that will run the code necessary to start Python in the remote server. My script is named &lt;code&gt;remote-python&lt;/code&gt;:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;#!/usr/bin/env bash
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;ssh hpclogin -t &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;module load python/3.12; python &lt;/span&gt;$@&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# You could also change the working directory and load a virtual environment:&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# ssh hpclogin -t &amp;#34;module load python/3.12; cd ~/Guilherme/CRON/aims-test/; source pyenv/bin/activate; python $@&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Make the script executable:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;chmod +x remote-python
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Modify how Emacs launches the Python interpreter:&lt;/p&gt;</description>
+      
+    </item>
+    
+  </channel>
+</rss>

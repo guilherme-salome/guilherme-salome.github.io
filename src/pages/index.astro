@@ -1,54 +1,77 @@
 ---
 // Guilherme Salome - Personal Website
+import '../styles/global.css';
+
+const title = 'Guilherme Salome';
+const description = 'Senior data scientist leading ML systems at Eli Lilly. PhD in Economics from Duke.';
+const siteUrl = Astro.site ? Astro.site.toString().replace(/\/$/, '') : '';
+const canonicalUrl = siteUrl || 'https://guilherme-salome.github.io';
+const ogImage = `${canonicalUrl}/og.svg`;
 ---
 
 <html lang="en">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="description" content="Guilherme Salome - Data Scientist, Emacs enthusiast, and researcher." />
-    <title>Guilherme Salome</title>
-    <link rel="stylesheet" href="/styles/global.css" />
+    <meta name="description" content={description} />
+    <title>{title}</title>
+    <link rel="canonical" href={canonicalUrl} />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:image" content={ogImage} />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
   </head>
   <body>
     <div class="container">
       <!-- Header -->
       <header class="site-header">
-        <div class="header-top">
-          <h1 class="site-title">Guilherme Salome</h1>
-          <nav class="site-nav">
-            <a href="#blog">Blog</a>
-            <span class="separator">•</span>
-            <a href="#academic">Academic</a>
-            <span class="separator">•</span>
-            <div class="social-icons">
-               <a href="https://github.com/guilherme-salome" aria-label="GitHub">
-                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg>
-               </a>
-               <a href="https://linkedin.com/in/gfps" aria-label="LinkedIn">
-                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle></svg>
-               </a>
-               <a href="mailto:guilhermesalome@gmail.com" aria-label="Email">
-                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
-               </a>
-            </div>
-          </nav>
-        </div>
-        <p class="site-intro">Data scientist building ML systems. Previously PhD at Duke.</p>
+        <h1 class="site-title">{title}</h1>
+        <p class="site-intro">{description}</p>
+        <nav class="site-nav">
+          <a href="#blog">Blog</a>
+          <span class="separator">•</span>
+          <a href="#academic">Academic</a>
+          <span class="separator">•</span>
+          <a href="https://github.com/guilherme-salome">GitHub</a>
+          <span class="separator">•</span>
+          <a href="https://linkedin.com/in/gfps">LinkedIn</a>
+        </nav>
       </header>
 
       <!-- Timeline (Resume) -->
       <section class="timeline">
         <article class="timeline-item">
-          <img src="/logos/company-placeholder.svg" alt="Company" class="timeline-logo" />
+          <img src="/logos/eli-lilly.svg" alt="Eli Lilly and Company" class="timeline-logo" />
           <div class="timeline-content">
             <div class="timeline-header">
-              <span class="timeline-dates">2020–Present</span>
-              <span class="timeline-role">Senior Data Scientist</span>
-              <span class="timeline-company">at Company Name</span>
+              <span class="timeline-dates">2022-Present</span>
+              <span class="timeline-role">Senior Advisor - Data Science</span>
+              <span class="timeline-company">Eli Lilly and Company</span>
             </div>
             <p class="timeline-description">
-              Leading data science teams across the US and India. Building ML models for decision-making and bridging technical execution with strategic goals.
+              Lead the Dynamic Targeting platform guiding salesforce engagement across LillyUSA business units.
+              Design causal impact frameworks to quantify commercial lift and support cross-functional decisions.
+            </p>
+          </div>
+        </article>
+
+        <article class="timeline-item">
+          <img src="/logos/eli-lilly.svg" alt="Eli Lilly and Company" class="timeline-logo" />
+          <div class="timeline-content">
+            <div class="timeline-header">
+              <span class="timeline-dates">2020-2022</span>
+              <span class="timeline-role">Advisor - Data Science</span>
+              <span class="timeline-company">Eli Lilly and Company</span>
+            </div>
+            <p class="timeline-description">
+              Built automated marketing mix modeling and experimentation pipelines to optimize $500M+ in spend.
+              Led a cross-regional data science team improving HCP targeting and commercial analytics tooling.
             </p>
           </div>
         </article>
@@ -57,26 +80,56 @@
           <img src="/logos/duke.svg" alt="Duke University" class="timeline-logo" />
           <div class="timeline-content">
             <div class="timeline-header">
-              <span class="timeline-dates">2015–2020</span>
-              <span class="timeline-role">PhD Economics</span>
+              <span class="timeline-dates">2018-2019</span>
+              <span class="timeline-role">Lecturer</span>
               <span class="timeline-company">Duke University</span>
             </div>
             <p class="timeline-description">
-              Research on options markets, volatility, and investor disagreement. Published in the Journal of Financial Econometrics. Taught courses on Python, MATLAB, and financial econometrics.
+              Taught Financial Econometrics, Python, and MATLAB to MS and PhD students.
+              Developed code-first materials and led teaching assistant teams.
             </p>
           </div>
         </article>
 
         <article class="timeline-item">
-          <img src="/logos/company-placeholder.svg" alt="Previous Role" class="timeline-logo" />
+          <img src="/logos/duke.svg" alt="Duke University" class="timeline-logo" />
           <div class="timeline-content">
             <div class="timeline-header">
-              <span class="timeline-dates">2013–2015</span>
-              <span class="timeline-role">Research Assistant</span>
-              <span class="timeline-company">at Institution</span>
+              <span class="timeline-dates">2015-2020</span>
+              <span class="timeline-role">PhD, Economics</span>
+              <span class="timeline-company">Duke University</span>
             </div>
             <p class="timeline-description">
-              Economic research and data analysis. [Update with your actual experience]
+              Doctoral research on options markets and investor disagreement.
+              Published in the Journal of Financial Econometrics (2024).
+            </p>
+          </div>
+        </article>
+
+        <article class="timeline-item">
+          <img src="/logos/impa.svg" alt="IMPA" class="timeline-logo" />
+          <div class="timeline-content">
+            <div class="timeline-header">
+              <span class="timeline-dates">2012-2014</span>
+              <span class="timeline-role">MS, Mathematics</span>
+              <span class="timeline-company">IMPA</span>
+            </div>
+            <p class="timeline-description">
+              Graduate training in mathematics with a focus on analysis, optimization, and numerical methods.
+            </p>
+          </div>
+        </article>
+
+        <article class="timeline-item">
+          <img src="/logos/insper.svg" alt="Insper" class="timeline-logo" />
+          <div class="timeline-content">
+            <div class="timeline-header">
+              <span class="timeline-dates">2008-2011</span>
+              <span class="timeline-role">BS, Economics</span>
+              <span class="timeline-company">Insper</span>
+            </div>
+            <p class="timeline-description">
+              Undergraduate degree in economics; graduated with honors.
             </p>
           </div>
         </article>
@@ -141,14 +194,6 @@
         </div>
       </section>
 
-      <!-- Footer -->
-      <footer class="site-footer">
-        <div class="social-links">
-          <a href="https://github.com/guilherme-salome">GitHub</a>
-          <a href="https://linkedin.com/in/gfps">LinkedIn</a>
-          <a href="/resume.pdf">Resume (PDF)</a>
-        </div>
-      </footer>
     </div>
   </body>
 </html>

@@ -1,0 +1,40 @@
+---
+import '../styles/global.css';
+
+const title = 'Page not found';
+const description = 'The page you are looking for does not exist.';
+const siteUrl = Astro.site ? Astro.site.toString().replace(/\/$/, '') : '';
+const canonicalUrl = siteUrl ? `${siteUrl}/404` : '/404';
+const ogImage = siteUrl ? `${siteUrl}/og.svg` : '/og.svg';
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title} — Guilherme Salome</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonicalUrl} />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <meta property="og:title" content={`${title} — Guilherme Salome`} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:image" content={ogImage} />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content={`${title} — Guilherme Salome`} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
+  </head>
+  <body>
+    <div class="container">
+      <header class="site-header">
+        <h1 class="site-title">{title}</h1>
+        <p class="site-intro">Sorry, the page you requested could not be found.</p>
+        <nav class="site-nav">
+          <a href="/">Back to home</a>
+        </nav>
+      </header>
+    </div>
+  </body>
+</html>

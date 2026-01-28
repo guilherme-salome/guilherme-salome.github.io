@@ -2,7 +2,12 @@
 import Post from '../../layouts/Post.astro';
 ---
 
-<Post title="Executing Python Code Blocks on a Remote Server" date="February 2025" tags={["Emacs", "org-mode", "Python"]}>
+<Post
+  title="Executing Python Code Blocks on a Remote Server"
+  date="February 2025"
+  tags={["Emacs", "org-mode", "Python"]}
+  description="Configure Emacs to send Org-babel Python blocks to a remote interpreter over SSH."
+>
 
 <p>If you're working on a remote server but want to send Python code from Emacs running on your laptop, you can use an <strong>inferior Python shell</strong> that runs remotely. This tutorial shows how to configure Emacs to launch Python on a remote machine and correctly send code blocks from Org mode.</p>
 

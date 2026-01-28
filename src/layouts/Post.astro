@@ -6,9 +6,15 @@ interface Props {
   title: string;
   date: string;
   tags?: string[];
+  description?: string;
+  ogImage?: string;
 }
 
-const { title, date, tags = [] } = Astro.props;
+const { title, date, tags = [], description, ogImage } = Astro.props;
+const summary = description || `Notes and writing by ${title}.`;
+const siteUrl = Astro.site ? Astro.site.toString().replace(/\/$/, '') : '';
+const canonicalUrl = Astro.url ? Astro.url.toString() : siteUrl;
+const resolvedOgImage = ogImage || `${siteUrl}/og.svg`;
 ---
 
 <html lang="en">
@@ -16,7 +22,18 @@ const { title, date, tags = [] } = Astro.props;
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{title} — Guilherme Salome</title>
-    <link rel="stylesheet" href="/styles/global.css" />
+    <meta name="description" content={summary} />
+    <link rel="canonical" href={canonicalUrl} />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <meta property="og:title" content={`${title} — Guilherme Salome`} />
+    <meta property="og:description" content={summary} />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:image" content={resolvedOgImage} />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content={`${title} — Guilherme Salome`} />
+    <meta name="twitter:description" content={summary} />
+    <meta name="twitter:image" content={resolvedOgImage} />
     <style>
       .post-header {
         margin-bottom: 2rem;

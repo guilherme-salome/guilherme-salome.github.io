@@ -1,0 +1,43 @@
+---
+import Post from '../../layouts/Post.astro';
+---
+
+<Post title="Building a Framework for Managing Projects and People" date="March 2025" tags={["Emacs", "org-mode", "org-roam", "management"]}>
+
+<p>Org-mode in Emacs is a powerhouse for managing projects and teams, providing an all-in-one environment for notes, tasks, scheduling, and even code. Despite the abundance of modern productivity apps, Org-mode remains a steadfast choice for the do-it-yourself crowd.</p>
+
+<p>Its strength lies in flexibility – you can tailor Org-mode to your workflow, create custom agendas, and link any resource (documents, emails, web content) via hyperlinks. This makes it ideal for project management: you aren't forced into a one-size-fits-all structure, and you maintain full control of your data (which lives in plain text).</p>
+
+<h2>The Conceptual Framework</h2>
+
+<p><strong>Organizing Projects, People, Tasks, and Discussions</strong></p>
+
+<p>At the core of this system are <strong>two key elements</strong>: projects and people. We organize each element as an Org-roam node (note, or org-file), using links and tags to connect them:</p>
+
+<ul>
+  <li><strong>Projects</strong>: Each project is a dedicated Org file representing a single initiative. The file contains an overview, goals, and project-specific TODOs.</li>
+  <li><strong>People</strong>: Each team member has their own Org-roam note with key details like their role, contact info, and ongoing notes.</li>
+  <li><strong>Tasks</strong>: TODO headlines in Org-mode, most living within project notes under a "Planning" section.</li>
+  <li><strong>Discussions</strong>: Meetings and conversations captured as outline entries, either in project notes or person notes.</li>
+</ul>
+
+<h2>Scalability</h2>
+
+<p>One of the benefits of this framework is that it scales elegantly. Because each project and person is just a note, you can add as many as needed without cluttering any single file. Org-roam's database can handle thousands of notes, and Org-mode's agenda can compile an overview from many files.</p>
+
+<p>By tagging each project file and using a custom agenda command that gathers all notes with that tag, you can generate a project overview rapidly. This approach can shrink agenda generation from 50+ seconds to under 1 second, even with a large number of notes.</p>
+
+<h2>Day-to-Day Usage</h2>
+
+<p>How does this framework look in daily practice?</p>
+
+<ul>
+  <li><strong>Morning Review</strong>: Start the day by opening your Org agenda to see all tasks due or scheduled across projects.</li>
+  <li><strong>Updating Project Status</strong>: Jump between project notes, mark tasks DONE, and add new TODOs as needed.</li>
+  <li><strong>Managing Direct Reports</strong>: Use one-on-one meeting notes in person notes, capturing topics discussed and action items.</li>
+  <li><strong>Collaborating with Colleagues</strong>: Log brief notes about discussions in project notes, linking people and context.</li>
+</ul>
+
+<p>Throughout the day, the combination of Org-mode and Org-roam is like a personal assistant. Org-mode handles <em>what</em> needs to be done and <em>when</em>, while Org-roam provides the <em>who</em> and <em>how</em> context.</p>
+
+</Post>

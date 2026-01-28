@@ -1,0 +1,49 @@
+---
+import Post from '../../layouts/Post.astro';
+---
+
+<Post title="Part II: Building a Framework for Managing Projects and People" date="April 2025" tags={["Emacs", "org-mode", "org-roam", "management"]}>
+
+<p>As someone who frequently manages people and projects, I've long felt the need for a cohesive system within Emacs—one that ties together projects, tasks, and people, leveraging Org-mode's power. Over the past few weeks, I've started building an Emacs package that aims to support my workflow around these needs.</p>
+
+<p><strong>This is a first draft</strong>: a collection of functions, experiments, and utilities. The architecture—and even some core concepts—will certainly evolve as I refine my ideas and adapt them to real-world usage.</p>
+
+<p>You can follow development or try the code from the public repository: <a href="https://github.com/guilherme-salome/management">github.com/guilherme-salome/management</a></p>
+
+<h2>Core Concepts</h2>
+
+<p>The big idea is to:</p>
+
+<ul>
+  <li>Centralize information about projects and people using <em>Org-roam</em></li>
+  <li>Synchronize and manage project tasks, project status, and personal assignments</li>
+  <li>Integrate with external project management tools (like Jira)</li>
+  <li>Visualize assignments, tasks, and progress directly within Org files</li>
+</ul>
+
+<h2>Key Components</h2>
+
+<h3>1. Utilities for Navigating Org Trees</h3>
+<p>Functions to find or create outline headings within org files programmatically—ensuring sections like "Planning" or "Working On" exist and are nested correctly.</p>
+
+<h3>2. "Working On"—Automatic Personal Task Views</h3>
+<p>Each person maintains a "Working On" section, listing all their active tasks from across projects. The function <code>management-people-update-working-on</code> automates this.</p>
+
+<h3>3. Project & Task Creation</h3>
+<p>Org-roam capture templates for both projects and people, providing consistent structure out of the box.</p>
+
+<h3>4. Jira Integration (Alpha Stage)</h3>
+<p>Connecting Org-mode project trees to Jira, fetching data from Jira APIs and mapping tasks/epics to Org outlines.</p>
+
+<h2>Next Steps</h2>
+
+<ul>
+  <li>Further solidify the framework, converging from rapid prototype to stable workflows</li>
+  <li>Enhance interactive dashboards and summaries within Emacs</li>
+  <li>Robustify Jira and third-party integration</li>
+  <li>Expand documentation and publish more guides</li>
+</ul>
+
+<p>Follow the repository for updates: <a href="https://github.com/guilherme-salome/management">github.com/guilherme-salome/management</a></p>
+
+</Post>

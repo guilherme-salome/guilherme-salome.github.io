@@ -1,2 +1,18 @@
-data/
-public/
+# Astro
+dist/
+node_modules/
+.astro/
+
+# Hugo (legacy - can be removed after migration)
+.hugo_build.lock
+resources/_gen/
+
+# Editor
+.vscode/
+*.swp
+*.swo
+.DS_Store
+
+# Environment
+.env
+.env.local

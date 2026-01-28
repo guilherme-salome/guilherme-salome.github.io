@@ -1,0 +1,73 @@
+---
+import Post from '../../layouts/Post.astro';
+---
+
+<Post title="Executing Python Code Blocks on a Remote Server" date="February 2025" tags={["Emacs", "org-mode", "Python"]}>
+
+<p>If you're working on a remote server but want to send Python code from Emacs running on your laptop, you can use an <strong>inferior Python shell</strong> that runs remotely. This tutorial shows how to configure Emacs to launch Python on a remote machine and correctly send code blocks from Org mode.</p>
+
+<h2>Setting Up a Remote Python Launcher</h2>
+
+<p>First, create a script that will start Python on the remote server.</p>
+
+<pre><code>#!/usr/bin/env bash
+ssh myserver "python $@"
+</code></pre>
+
+<p>The command <code>python $@</code> ensures that any arguments passed to the script are forwarded to the Python interpreter on the remote server. In Bash, <code>$@</code> represents all command-line arguments given to the script, preserving their structure.</p>
+
+<p>The script does not need to be simple. Prior to launching Python, you can run arbitrary commands, including loading modules in a cluster, changing directories, and activating virtual environments. For example:</p>
+
+<pre><code>#!/usr/bin/env bash
+ssh my-hpc-login "
+    qlogin -l my-super-computer; \
+    cd ~/myproject; \
+    source ./venv/bin/activate; \
+    python $@
+"
+</code></pre>
+
+<p>Make the script executable:</p>
+
+<pre><code>chmod +x remote-python</code></pre>
+
+<h2>Configuring Emacs to Use the Remote Python Shell</h2>
+
+<p>Now, tell Emacs to use this script as the Python interpreter:</p>
+
+<pre><code>(setq python-shell-interpreter "/path/to/remote-python"
+      python-shell-interpreter-args "-i"
+      python-shell-completion-native-enable nil
+      comint-max-line-length 100000)</code></pre>
+
+<p>After this, running <code>M-x run-python</code> will start a Python process on the remote server.</p>
+
+<h2>Making Org-Babel Send Code to the Remote Python Shell</h2>
+
+<p>By default, Org-Babel tries to launch a new Python process when executing a code block. We want to avoid this and instead use an already-running Python shell started manually by the user.</p>
+
+<pre><code>(defun my-org-babel-execute:python (body params)
+  (let ((proc (python-shell-get-process)))
+    (python-shell-send-string (concat body "\n") proc) ""))
+
+(advice-add 'org-babel-execute:python :override #'my-org-babel-execute:python)</code></pre>
+
+<h2>Testing the Setup</h2>
+
+<p>Start the Python shell manually with <code>M-x run-python</code>. Then, try running a Python code block in Org mode with <code>C-c C-c</code>:</p>
+
+<pre><code>print("Hello, remote Python!")</code></pre>
+
+<p>You are now sending code directly to an already-running process. Notice that there are limitations on displaying the results back in the <code>:RESULTS</code> block, but at least you can now use arbitrary computing power.</p>
+
+<h2>Conclusion</h2>
+
+<p>Now, you can seamlessly run Python code on a remote server from Emacs using Org mode. This method ensures that:</p>
+
+<ol>
+  <li>You start the Python shell manually with <code>M-x run-python</code>.</li>
+  <li>Code is sent directly to the already-running process.</li>
+  <li>Long code blocks execute without running into writing code to temporary files on a remote server.</li>
+</ol>
+
+</Post>

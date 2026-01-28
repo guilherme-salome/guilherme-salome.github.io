@@ -1,0 +1,100 @@
+---
+import '../styles/global.css';
+
+// Blog post layout for individual articles
+interface Props {
+  title: string;
+  date: string;
+  tags?: string[];
+}
+
+const { title, date, tags = [] } = Astro.props;
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title} — Guilherme Salome</title>
+    <link rel="stylesheet" href="/styles/global.css" />
+    <style>
+      .post-header {
+        margin-bottom: 2rem;
+      }
+      .post-title {
+        font-family: var(--font-serif);
+        font-size: 2rem;
+        font-weight: 400;
+        margin-bottom: 0.5rem;
+      }
+      .post-meta {
+        color: var(--color-text-muted);
+        font-size: 0.9rem;
+      }
+      .post-content {
+        line-height: 1.8;
+      }
+      .post-content h2 {
+        font-family: var(--font-serif);
+        font-size: 1.5rem;
+        font-weight: 400;
+        margin: 2rem 0 1rem;
+      }
+      .post-content h3 {
+        font-size: 1.1rem;
+        font-weight: 600;
+        margin: 1.5rem 0 0.75rem;
+      }
+      .post-content p {
+        margin-bottom: 1rem;
+      }
+      .post-content pre {
+        background: #f5f5f5;
+        padding: 1rem;
+        border-radius: 4px;
+        overflow-x: auto;
+        margin: 1rem 0;
+      }
+      .post-content code {
+        font-family: 'SF Mono', Consolas, monospace;
+        font-size: 0.9em;
+      }
+      .post-content ul, .post-content ol {
+        margin: 1rem 0 1rem 1.5rem;
+      }
+      .post-content li {
+        margin-bottom: 0.5rem;
+      }
+      .back-link {
+        display: inline-block;
+        margin-bottom: 2rem;
+        color: var(--color-text-muted);
+        text-decoration: none;
+      }
+      .back-link:hover {
+        text-decoration: underline;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <a href="/" class="back-link">← Back</a>
+      
+      <header class="post-header">
+        <h1 class="post-title">{title}</h1>
+        <div class="post-meta">
+          <time>{date}</time>
+          {tags.length > 0 && <span> · {tags.join(', ')}</span>}
+        </div>
+      </header>
+
+      <article class="post-content">
+        <slot />
+      </article>
+
+      <footer class="site-footer">
+        <a href="/">← Back to home</a>
+      </footer>
+    </div>
+  </body>
+</html>

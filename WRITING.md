@@ -18,13 +18,43 @@ Set `draft: true` to keep a post from being published (it won't appear in listin
 - `/writing/<slug>/` → an individual entry
 - `/rss.xml` → RSS feed (published entries only)
 
-## Org-mode → Markdown (planned)
+## Org-mode → Markdown
 
 Goal: keep org-mode as the source of truth and export to `src/content/writing/`.
 
-Two good options:
+This repo includes a small exporter script that:
+- scans a directory of `.org` files
+- converts each file to GitHub-flavored Markdown via **pandoc**
+- generates the required Astro frontmatter (`title`, `pubDate`, etc.)
+- writes the result into `src/content/writing/*.md`
 
-1) **ox-hugo** (Emacs): export org subtree(s) to Markdown on save / command.
-2) **Pandoc**: `pandoc post.org -f org -t gfm -o src/content/writing/post.md`
+### Requirements
 
-Next step: add a small script (plus Makefile target) to export from your org-roam directory into this repo.
+- `pandoc` installed and available on your PATH
+
+### Usage
+
+```bash
+# from repo root
+npm run export:org -- --in /path/to/your/org-roam --out src/content/writing
+
+# dry-run (prints which files would be updated)
+npm run export:org -- --in /path/to/your/org-roam --out src/content/writing --dry-run
+```
+
+### Supported org header keywords
+
+The exporter looks for org keywords like:
+
+- `#+TITLE:` → maps to `title` (fallback: filename)
+- `#+DESCRIPTION:` → maps to `description`
+- `#+DATE:` (or `#+PUBLISH_DATE:` / `#+PUBDATE:`) → maps to `pubDate`
+- `#+UPDATED:` (or `#+UPDATED_DATE:`) → maps to `updatedDate`
+- `#+FILETAGS:` (e.g. `:causal:llm:`) → maps to `tags`
+- `#+DRAFT: true` (or include the `draft` tag) → maps to `draft: true`
+
+If no date is provided, it falls back to the file mtime.
+
+### Notes / next step
+
+If you want this to run from your org-roam directory without typing paths every time, next step is a tiny wrapper Makefile target or `.env` file that stores your org-roam path.

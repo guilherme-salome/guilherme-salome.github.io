@@ -1,0 +1,26 @@
+---
+import { getCollection } from 'astro:content';
+import PageLayout from '../../layouts/Page.astro';
+
+const entries = (await getCollection('writing'))
+  .filter((e) => !e.data.draft)
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+---
+
+<PageLayout title="Writing" description="Notes and posts (content collections).">
+  <h1>Writing</h1>
+  {
+    entries.length === 0 ? (
+      <p>No published posts yet.</p>
+    ) : (
+      <ul>
+        {entries.map((entry) => (
+          <li>
+            <a href={`/writing/${entry.slug}/`}>{entry.data.title}</a>
+            <span> — {entry.data.pubDate.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })}</span>
+          </li>
+        ))}
+      </ul>
+    )
+  }
+</PageLayout>

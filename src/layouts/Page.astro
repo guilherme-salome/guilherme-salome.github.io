@@ -1,0 +1,41 @@
+---
+import '../styles/global.css';
+
+interface Props {
+  title: string;
+  description?: string;
+}
+
+const { title, description } = Astro.props;
+const summary = description || `Notes by ${title}.`;
+const siteUrl = Astro.site ? Astro.site.toString().replace(/\/$/, '') : '';
+const canonicalUrl = Astro.url ? Astro.url.toString() : siteUrl;
+const ogImage = `${siteUrl}/og.svg`;
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title} — Guilherme Salome</title>
+    <meta name="description" content={summary} />
+    <link rel="canonical" href={canonicalUrl} />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <meta property="og:title" content={`${title} — Guilherme Salome`} />
+    <meta property="og:description" content={summary} />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:image" content={ogImage} />
+  </head>
+  <body>
+    <div class="container">
+      <a href="/" class="back-link">← Back</a>
+      <main>
+        <slot />
+      </main>
+      <footer class="site-footer">
+        <a href="/">← Back to home</a>
+      </footer>
+    </div>
+  </body>
+</html>

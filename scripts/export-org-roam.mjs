@@ -2,8 +2,19 @@
 /**
  * Export org-mode files to Astro content collection markdown.
  *
+ * Safety: by default, this script will ONLY export files that are explicitly
+ * marked for publishing (tagged with :publish: or containing #+PUBLISH: true).
+ * This prevents accidentally exporting private org-roam notes into a public site.
+ *
  * Usage:
- *   node scripts/export-org-roam.mjs --in /path/to/org-roam --out src/content/writing
+ *   node scripts/export-org-roam.mjs --in /path/to/org --out src/content/writing
+ *   node scripts/export-org-roam.mjs --in /path/to/org --out src/content/writing --all
+ *
+ * Or via .env (recommended):
+ *   ORG_ROAM_DIR=/path/to/your/org
+ *   ORG_OUT_DIR=src/content/writing
+ *   ORG_PUBLISH_TAG=publish
+ *   npm run export:org
  *
  * Requires:
  *   pandoc on PATH
@@ -13,22 +24,64 @@ import { spawnSync } from 'node:child_process';
 import fs from 'node:fs';
 import path from 'node:path';
 
+function loadDotEnv(dotEnvPath) {
+  if (!fs.existsSync(dotEnvPath)) return;
+  const src = fs.readFileSync(dotEnvPath, 'utf8');
+  for (const line of src.split(/\r?\n/)) {
+    const trimmed = line.trim();
+    if (!trimmed || trimmed.startsWith('#')) continue;
+    const m = trimmed.match(/^([A-Za-z_][A-Za-z0-9_]*)\s*=\s*(.*)\s*$/);
+    if (!m) continue;
+    const key = m[1];
+    let val = m[2];
+    // Strip surrounding quotes
+    if (
+      (val.startsWith('"') && val.endsWith('"')) ||
+      (val.startsWith("'") && val.endsWith("'"))
+    ) {
+      val = val.slice(1, -1);
+    }
+    if (process.env[key] == null) process.env[key] = val;
+  }
+}
+
 function parseArgs(argv) {
-  const args = { inDir: null, outDir: null, glob: '.org', dryRun: false };
+  // Load .env from the current working directory if present.
+  loadDotEnv(path.join(process.cwd(), '.env'));
+
+  const args = {
+    inDir: process.env.ORG_ROAM_DIR || null,
+    outDir: process.env.ORG_OUT_DIR || 'src/content/writing',
+    glob: process.env.ORG_EXT || '.org',
+    dryRun: false,
+    recursive: false,
+    requirePublish: true,
+    publishTag: process.env.ORG_PUBLISH_TAG || 'publish',
+  };
+
   for (let i = 2; i < argv.length; i++) {
     const a = argv[i];
     if (a === '--in') args.inDir = argv[++i];
     else if (a === '--out') args.outDir = argv[++i];
     else if (a === '--ext') args.glob = argv[++i];
     else if (a === '--dry-run') args.dryRun = true;
+    else if (a === '--recursive') args.recursive = true;
+    else if (a === '--no-recursive') args.recursive = false;
+    else if (a === '--publish-tag') args.publishTag = argv[++i];
+    else if (a === '--all') args.requirePublish = false;
+    else if (a === '--require-publish') args.requirePublish = true;
     else if (a === '-h' || a === '--help') {
-      console.log(`\nExport org-mode files into Astro content markdown.\n\nOptions:\n  --in <dir>      Input directory containing .org files\n  --out <dir>     Output directory (e.g. src/content/writing)\n  --ext <ext>     File extension filter (default: .org)\n  --dry-run       Print what would change without writing\n`);
+      console.log(`\nExport org-mode files into Astro content markdown.\n\nOptions:\n  --in <dir>           Input directory containing .org files (or set ORG_ROAM_DIR in .env)\n  --out <dir>          Output directory (default: src/content/writing; or set ORG_OUT_DIR)\n  --ext <ext>          File extension filter (default: .org; or set ORG_EXT)\n  --recursive          Recurse into subdirectories (default: off)\n  --dry-run            Print what would change without writing\n\nPublishing safety (default ON):\n  --require-publish    Only export files tagged :publish: or with #+PUBLISH: true (default)\n  --publish-tag <tag>  Tag name to require (default: publish; or set ORG_PUBLISH_TAG)\n  --all                Export all matching files (DANGEROUS if pointed at full org-roam)\n`);
       process.exit(0);
     } else {
       throw new Error(`Unknown arg: ${a}`);
     }
   }
-  if (!args.inDir || !args.outDir) throw new Error('Missing required args: --in and --out');
+
+  if (!args.inDir) throw new Error('Missing required input: --in <dir> (or set ORG_ROAM_DIR in .env)');
+  if (!args.outDir) throw new Error('Missing required output: --out <dir> (or set ORG_OUT_DIR in .env)');
+  if (!args.publishTag) throw new Error('Missing publish tag (set ORG_PUBLISH_TAG or pass --publish-tag)');
+
   return args;
 }
 
@@ -41,7 +94,7 @@ function slugify(s) {
     .replace(/^-+|-+$/g, '');
 }
 
-function parseOrgHeader(src) {
+function parseOrgHeader(src, publishTag) {
   // org keywords are typically #+KEY: value
   const lines = src.split(/\r?\n/);
   const header = {};
@@ -58,16 +111,22 @@ function parseOrgHeader(src) {
 
   // FILETAGS is often :tag1:tag2:
   const filetags = (header.FILETAGS || '').trim();
-  const tags = filetags
+  const tagsRaw = filetags
     ? filetags
         .split(':')
         .map((t) => t.trim())
         .filter(Boolean)
     : [];
 
-  const draft = /^(true|yes|1)$/i.test((header.DRAFT || '').trim()) || tags.includes('draft');
+  const draft = /^(true|yes|1)$/i.test((header.DRAFT || '').trim()) || tagsRaw.includes('draft');
 
-  return { title, description, dateRaw, updatedRaw, tags, draft };
+  const publishKeyword = /^(true|yes|1)$/i.test((header.PUBLISH || '').trim());
+  const publish = publishKeyword || tagsRaw.includes(publishTag);
+
+  // Do not leak control tags into public-facing tags.
+  const tags = tagsRaw.filter((t) => t !== 'draft' && t !== publishTag);
+
+  return { title, description, dateRaw, updatedRaw, tags, draft, publish };
 }
 
 function toIsoDateOrThrow(dateRaw, fallbackMtimeMs) {
@@ -123,8 +182,21 @@ function writeIfChanged(outPath, content, dryRun) {
   return { changed };
 }
 
+function listFiles(dirAbs, ext, recursive) {
+  const out = [];
+  for (const ent of fs.readdirSync(dirAbs, { withFileTypes: true })) {
+    const p = path.join(dirAbs, ent.name);
+    if (ent.isDirectory()) {
+      if (recursive) out.push(...listFiles(p, ext, recursive));
+      continue;
+    }
+    if (ent.isFile() && ent.name.endsWith(ext)) out.push(p);
+  }
+  return out;
+}
+
 function main() {
-  const { inDir, outDir, glob, dryRun } = parseArgs(process.argv);
+  const { inDir, outDir, glob, dryRun, recursive, requirePublish, publishTag } = parseArgs(process.argv);
   const inAbs = path.resolve(process.cwd(), inDir);
   const outAbs = path.resolve(process.cwd(), outDir);
 
@@ -132,10 +204,7 @@ function main() {
   if (!fs.existsSync(outAbs)) fs.mkdirSync(outAbs, { recursive: true });
 
   const ext = glob.startsWith('.') ? glob : `.${glob}`;
-  const orgFiles = fs
-    .readdirSync(inAbs)
-    .filter((f) => f.endsWith(ext))
-    .map((f) => path.join(inAbs, f));
+  const orgFiles = listFiles(inAbs, ext, recursive);
 
   if (orgFiles.length === 0) {
     console.log(`No ${ext} files found in ${inAbs}`);
@@ -143,11 +212,20 @@ function main() {
   }
 
   let changedCount = 0;
+  let exportedCount = 0;
+  let skippedCount = 0;
+
   for (const orgPath of orgFiles) {
     const orgSrc = fs.readFileSync(orgPath, 'utf8');
     const st = fs.statSync(orgPath);
 
-    const hdr = parseOrgHeader(orgSrc);
+    const hdr = parseOrgHeader(orgSrc, publishTag);
+    if (requirePublish && !hdr.publish) {
+      skippedCount++;
+      continue;
+    }
+    exportedCount++;
+
     const title = hdr.title || path.basename(orgPath, ext);
 
     const pubDate = toIsoDateOrThrow(hdr.dateRaw, st.mtimeMs);
@@ -177,7 +255,11 @@ function main() {
     }
   }
 
-  console.log(`\nDone. ${changedCount}/${orgFiles.length} file(s) updated.`);
+  if (requirePublish) {
+    console.log(`\nDone. ${changedCount}/${exportedCount} exported file(s) updated. (${skippedCount} skipped; missing :${publishTag}: or #+PUBLISH: true)`);
+  } else {
+    console.log(`\nDone. ${changedCount}/${exportedCount} exported file(s) updated.`);
+  }
 }
 
 main();
